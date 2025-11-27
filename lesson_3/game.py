@@ -58,3 +58,5 @@ def heal(character, amount, send_message_func):
     pass
 # Написать функцию добавления спосностей герою "abilities": []
 
+def add_ability(character, ability, send_message_func):
+    pass
