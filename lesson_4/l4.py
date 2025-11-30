@@ -26,10 +26,24 @@ def start_handler(message):
     user_name = message.from_user.username
     add_to_wish_list(user_name)
     bot.send_message(message.chat.id, f"Привет, {user_name}! Твой список желаний готов.")
+    bot.send_message(message.chat.id, "Используй /add_wish чтобы добавить желание \n и /get_my_wish_list чтобы посмотреть свой список.")
 
 @bot.message_handler(commands=["get_my_wish_list"])
 def get_my_wish_list_handler(message):
-    pass
+    user_name = message.from_user.username
+    if len(wishlist[user_name]) == 0:
+        bot.send_message(message.chat.id, f"Твой список желаний пуст.")
+    else:
+        listt = wishlist.get(user_name)
+        st = "Твой список желаний:\n"
+
+        for i, item in enumerate(listt, start=1):
+            st += f"{i}. {item}\n"
+
+        bot.send_message(message.chat.id, st)
+
+#добавить функцию просмотр листа друга, пользователь пишет /get_my_friends_list username_друга
+#бот отвечает списком желаний друга
 
 @bot.message_handler(commands=["add_wish"])
 def add_wish_handler(message):
