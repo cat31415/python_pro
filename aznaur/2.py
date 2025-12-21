@@ -12,16 +12,13 @@ class Character:
 
     #Добавить функцию лечения def heal(self, amount):
     def heal(self, amount):
-        if amount.health < 100:
-            amount.health += self.ar
-        elif amount.health >= 0:
-            print()
+        self.health = min(100, self.helth + amount)
             
     def __str__(self):
         return f"Name: {self.name} health: {self.health}  attack power: {self.attack_power}"
 
 Bob = Character("Bob", 100, 20)
-Alice = Character("Alice", 120, 15)
+Alice = Character("Alice", 100, 15)
 print(Bob)
 print(Alice)
 
