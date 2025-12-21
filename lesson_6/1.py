@@ -3,11 +3,13 @@ class Character:
         self.name = name
         self.health = health
         self.attack_power = attack_power
+        # Добавить поле щит
 
     def attack(self, other):
         other.health -= self.attack_power
         print(f"{self.name} attacs {other.name}")
 
+    #Добавить функцию лечения def heal(self, amount):
     def __str__(self):
         return f"Name: {self.name} health: {self.health}  attack power: {self.attack_power}"
 
