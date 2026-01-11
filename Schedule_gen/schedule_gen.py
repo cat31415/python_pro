@@ -52,6 +52,7 @@ class Student:
         return f"Student(id={self.id}, name={self.name}, login={self.login}, group={self.group.name if self.group else 'None'})"
 
 #Создать класс Teacher(id, name, login, password, subjects) методы change_password(last_password, new_password), add_subject(subject), remove_subject(subject)
+#Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher)
 
 student1 = Student(1, "Alice", "alice123", "pass1", None)
 student2 = Student(2, "Bob", "bob456", "pass2", None)
