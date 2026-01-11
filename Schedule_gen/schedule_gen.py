@@ -12,7 +12,7 @@ class Group:
     def __init__(self, id, name, students, schedule):
         self.id = id
         self.name = name
-        self.students = []
+        self.students = students.copy()
         self.schedule = schedule
 
     def add_student_to_group(self, student):
@@ -28,7 +28,8 @@ class Group:
             raise ValueError("Student not in that group")
 
     def __str__(self):
-        return f"Group(id={self.id}, name={self.name}, students={len(self.students)})"
+        s_strudents = ', '.join([student.name for student in self.students])
+        return f"Group(id={self.id}, name={self.name}, students={s_strudents})"
 
 class Student:
     def __init__(self, id, name, login, password, group):
@@ -52,8 +53,16 @@ class Student:
 
 #Создать класс Teacher(id, name, login, password, subjects) методы change_password(last_password, new_password), add_subject(subject), remove_subject(subject)
 
-group1 = Group(1, "Group A", [], None)
 student1 = Student(1, "Alice", "alice123", "pass1", None)
+student2 = Student(2, "Bob", "bob456", "pass2", None)
+student3 = Student(3, "Charlie", "charlie789", "pass3", None)
+students = [student1, student2, student3]
+group1 = Group(1, "Group A", students, None)
+print(group1)
+student4 = Student(4, "David", "david101", "pass4", None)
+students[0] = student4
+group1.students[0] = student4
+print(group1)
 group1.add_student_to_group(student1)
 group2 = Group(2, "Group B", [], None)
 student1.change_group(group2)
@@ -61,4 +70,8 @@ print(student1)
 print(group1)
 print(group2)
 
+m = {"key": "value", "number": 42}
+print(m["number"])
 
+arr = [1, 2, 3, 4, 5]
+print(arr[2])
