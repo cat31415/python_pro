@@ -1,5 +1,5 @@
 class Room:
-    def __init__(self, id, name,):
+    def __init__(self, id, name):
         self.id = id
         self.name = name
 
@@ -28,8 +28,7 @@ class Group:
             raise ValueError("Student not in that group")
 
     def __str__(self):
-        s_strudents = ', '.join([student.name for student in self.students])
-        return f"Group(id={self.id}, name={self.name}, students={s_strudents})"
+        return f"Group(id={self.id}, name={self.name}, students={len(self.students)})"
 
 class Student:
     def __init__(self, id, name, login, password, group):
@@ -52,7 +51,6 @@ class Student:
         return f"Student(id={self.id}, name={self.name}, login={self.login}, group={self.group.name if self.group else 'None'})"
 
 #Создать класс Teacher(id, name, login, password, subjects) методы change_password(last_password, new_password), add_subject(subject), remove_subject(subject)
-
 class Teacher:
     def __init__(self, id, name, login, password, subjects):
         self.id = id
@@ -77,10 +75,32 @@ class Teacher:
         else:
             raise ValueError("Subject not found in teacher's subjects")
     def __str__(self):
-        return f"Teacher(id={self.id}, name={self.name}, login={self.password}, sabjects={self.subjects})"
+        return f"teacher(id={self.id}, name={self.name}, login={self.password}, sabjects={self.subjects})"
+
+        
+ 
+        
+#Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher), str, создать экземпляр класса Lesson, попробовать вызвать все его методы
+    
+class Lesson:
+    def __init__(self, id, subject, group, room, teacher):
+        self.id = id
+        self.subject = subject
+        self.group = group
+        self.room = room
+        self.teacher = teacher
+
+    def change_room(self, new_room):
+        self.room = new_room     
+
+    def change_teacher(self, new_teacher):
+        self.teacher = new_teacher
+    
+    def __str__(self):
+        return f"Lesson(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teacher={self.teacher})"
+    
 
 
-#Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher), str, создать экземпляр класса Lesson
 
 
 student1 = Student(1, "Alice", "alice123", "pass1", None)
@@ -109,6 +129,9 @@ print(arr[2])
 math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
+room101 = Room(101, "101")
+#lesson1 = 
 #teacher.remove_subject(physics)  # This will raise a ValueError
-print("Привет")
 print(teacher)
+
+
