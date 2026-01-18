@@ -52,6 +52,31 @@ class Student:
         return f"Student(id={self.id}, name={self.name}, login={self.login}, group={self.group.name if self.group else 'None'})"
 
 #Создать класс Teacher(id, name, login, password, subjects) методы change_password(last_password, new_password), add_subject(subject), remove_subject(subject)
+
+class Teacher:
+    def __init__(self, id, name, login, password, subjects):
+        self.id = id
+        self.name = name
+        self.login = login
+        self.password = password
+        self.subjects = subjects.copy()
+        
+    def change_password(self, last_password, new_password):
+        if self.password == last_password:
+            self.password = new_password
+        else:
+            raise ValueError("Incorrect password")
+        
+    def add_subject(self, subject):
+        if subject not in self.subjects:
+            self.subjects.append(subject)
+
+    def remove_subject(self, subject):
+        if subject in self.subjects:
+            self.subjects.remove(subject)
+        else:
+            raise ValueError("Subject not found in teacher's subjects")
+
 #Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher)
 
 student1 = Student(1, "Alice", "alice123", "pass1", None)
@@ -76,3 +101,8 @@ print(m["number"])
 
 arr = [1, 2, 3, 4, 5]
 print(arr[2])
+
+math = Subject(1, "Mathematics")
+physics = Subject(2, "Physics")
+teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
+teacher.remove_subject(physics)  # This will raise a ValueError
