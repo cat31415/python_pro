@@ -76,6 +76,7 @@ class Teacher:
             self.subjects.remove(subject)
         else:
             raise ValueError("Subject not found in teacher's subjects")
+     # def __str__(self):
 
 #Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher)
 
@@ -105,4 +106,5 @@ print(arr[2])
 math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
-teacher.remove_subject(physics)  # This will raise a ValueError
+#teacher.remove_subject(physics)  # This will raise a ValueError
+print(teacher)
