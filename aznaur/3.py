@@ -80,7 +80,29 @@ class Teacher:
         
  
         
+#Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher), str, создать экземпляр класса Lesson
     
+class Lesson:
+    def __init__(self, id, subject, group, room, teacher):
+        self.id = id
+        self.subject = subject
+        self.group = group
+        self.room = room
+        self.teacher = teacher
+
+    def change_room(self, new_room):
+        if self.room == new_room:
+            self.room = new_room     
+
+    def change_teacher(self, new_teacher):
+        if self.teacher == new_teacher:
+            self.teacher = new_teacher
+    
+    def __str__(self):
+        return f"Lessen(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teather={self.teacher})"
+    
+
+
 
 
 student1 = Student(1, "Alice", "alice123", "pass1", None)
