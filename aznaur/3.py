@@ -66,11 +66,16 @@ class Teacher:
             raise ValueError("Incorrect password")
         
     def add_subject(self, subject):
-        self.subjects.append(subject)
+        if subject not in self.subjects:
+            self.subjects.append(subject)
 
     def remove_subject(self, subject):
         if subject in self.subjects:
             self.subjects.remove(subject)
+        else:
+            raise ValueError("Subject not found in teacher's subjects")
+    def __str__(self):
+        return f"teacher(id={self.id}, name={self.name}, login={self.password}, sabjects={self.subjects})"
 
         
  
@@ -78,13 +83,33 @@ class Teacher:
     
 
 
-group1 = Group(1, "Group A", [], None)
 student1 = Student(1, "Alice", "alice123", "pass1", None)
+student2 = Student(2, "Bob", "bob456", "pass2", None)
+student3 = Student(3, "Charlie", "charlie789", "pass3", None)
+students = [student1, student2, student3]
+group1 = Group(1, "Group A", students, None)
+print(group1)
+student4 = Student(4, "David", "david101", "pass4", None)
+students[0] = student4
+group1.students[0] = student4
+print(group1)
 group1.add_student_to_group(student1)
 group2 = Group(2, "Group B", [], None)
 student1.change_group(group2)
 print(student1)
 print(group1)
 print(group2)
+
+m = {"key": "value", "number": 42}
+print(m["number"])
+
+arr = [1, 2, 3, 4, 5]
+print(arr[2])
+
+math = Subject(1, "Mathematics")
+physics = Subject(2, "Physics")
+teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
+#teacher.remove_subject(physics)  # This will raise a ValueError
+print(teacher)
 
 
