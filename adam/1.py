@@ -76,9 +76,12 @@ class Teacher:
             self.subjects.remove(subject)
         else:
             raise ValueError("Subject not found in teacher's subjects")
-     # def __str__(self):
+    def __str__(self):
+        return f"Teacher(id={self.id}, name={self.name}, login={self.password}, sabjects={self.subjects})"
 
-#Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher)
+
+#Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher), str, создать экземпляр класса Lesson
+
 
 student1 = Student(1, "Alice", "alice123", "pass1", None)
 student2 = Student(2, "Bob", "bob456", "pass2", None)
@@ -107,4 +110,23 @@ math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
 #teacher.remove_subject(physics)  # This will raise a ValueError
-print(teacher)
+
+class Lesson:
+    def __init__(self, id, subjects, room, group, teacher ):
+        self.id = id
+        self.room = room
+        self.group = group
+        self.teacher = teacher
+        self.subjects = subjects.copy()
+
+    def change_room(self, new_room, ):
+         self.room == new_room:
+
+
+    def change_teacher(self, new_teacher, ):
+         self.teacher == new_teacher:
+
+
+    def __str__(self):
+        return f"Lesson(id={self.id}, group={self.group}, room={self.room}, sabjects={self.subjects}, teacher={self.teacher})"
+    print("class Lesson:")
