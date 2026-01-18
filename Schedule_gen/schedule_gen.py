@@ -110,4 +110,5 @@ math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
 #teacher.remove_subject(physics)  # This will raise a ValueError
+print("Привет")
 print(teacher)
