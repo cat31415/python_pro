@@ -1,5 +1,5 @@
 class Room:
-    def __init__(self, id, name,):
+    def __init__(self, id, name):
         self.id = id
         self.name = name
 
@@ -91,18 +91,24 @@ class Lesson:
         self.teacher = teacher
 
     def change_room(self, new_room):
-        if self.room == new_room:
             self.room = new_room     
 
     def change_teacher(self, new_teacher):
-        if self.teacher == new_teacher:
             self.teacher = new_teacher
     
     def __str__(self):
-        return f"Lessen(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teather={self.teacher})"
+        return f"Lesson(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teacher={self.teacher})"
     
 
+class Schedule:
+    def __init__(self, id, group, lessons, teacher):
+        self.id = id
+        self.group = group
+        self.lessons = lessons
+        self.teacher = teacher
 
+
+       
 
 
 student1 = Student(1, "Alice", "alice123", "pass1", None)
@@ -131,6 +137,7 @@ print(arr[2])
 math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
+lesson1 = Lesson(1, math, group1,)
 #teacher.remove_subject(physics)  # This will raise a ValueError
 print(teacher)
 
