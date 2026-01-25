@@ -139,6 +139,7 @@ physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
 lesson1 = Lesson(1, math, group1,)
 #teacher.remove_subject(physics)  # This will raise a ValueError
+schedule = (1, group1, lesson1, teacher)
 print(teacher)
 
 
