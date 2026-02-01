@@ -1,4 +1,7 @@
+import time
+
 class Room:
+
     def __init__(self, id, name):
         self.id = id
         self.name = name
@@ -101,13 +104,15 @@ class Lesson:
     
 
 class Schedule:
-    def __init__(self, id, group, lessons, teacher):
+    def __init__(self, id, group, lessons,):
         self.id = id
         self.group = group
         self.lessons = lessons
         self.teacher = teacher
 
-
+class Time:
+    def __init__(self,):
+        pass
        
 
 
