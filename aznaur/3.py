@@ -86,22 +86,22 @@ class Teacher:
 #Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher), str, создать экземпляр класса Lesson
     
 class Lesson:
-    def __init__(self, id, subject, group, room, teacher):
+    def __init__(self, id, subject, group, room, teacher, time):
         self.id = id
         self.subject = subject
         self.group = group
         self.room = room
         self.teacher = teacher
+        self.time = time
 
     def change_room(self, new_room):
-            self.room = new_room     
+        self.room = new_room     
 
     def change_teacher(self, new_teacher):
-            self.teacher = new_teacher
+        self.teacher = new_teacher
     
     def __str__(self):
-        return f"Lesson(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teacher={self.teacher})"
-    
+        return f"Lesson(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teacher={self.teacher}, start_time={self.time.start_time}, end_time={self.time.end_time})"
 
 class Schedule:
     def __init__(self, id, group, lessons):
@@ -159,8 +159,10 @@ class Schedule:
         return result
 
 class Time:
-    def __init__(self,):
-        pass
+    def __init__(self, day, start_time, end_time):
+        self.day = day
+        self.start_time = start_time
+        self.end_time = end_time
        
 
 
@@ -190,9 +192,11 @@ room11 = Room(11, "11")
 math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
-lesson1 = Lesson(1, math, group1, room11, teacher)
+time1 = Time(0, "09:00", "10:30")
+lesson1 = Lesson(1, math, group1, room11, teacher, time1)
 #teacher.remove_subject(physics)  # This will raise a ValueError
-schedule = (1, group1, lesson1, teacher)
+schedule = Schedule(1, group1, [lesson1])
 print(teacher)
+print(schedule)
 
 
