@@ -104,11 +104,59 @@ class Lesson:
     
 
 class Schedule:
-    def __init__(self, id, group, lessons,):
+    def __init__(self, id, group, lessons):
         self.id = id
         self.group = group
-        self.lessons = lessons
-        self.teacher = teacher
+        self.lessons = [[] for _ in range(7)]  # 7 days a week
+        self.add_lessons(lessons)
+    
+    def add_lesson(self, lesson):
+        self.lessons[lesson.time.day].append(lesson)
+        # дома посмотреть как работает sort и lambda
+        self.lessons[lesson.time.day].sort(key=lambda x: x.time.start_time)
+    
+    def add_lessons(self, lessons):
+        for lesson in lessons:
+            self.add_lesson(lesson)
+    # добавить номер комнаты и учителя в расписани(с новой строки) тоесть каждый день недели занимае 3 строчки
+    def __str__(self):
+        result = f"Schedule(id={self.id}, group={self.group.name})\n"
+        days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        times = ["09:00-10:30", "10:45-12:15", "12:30-14:00", "14:15-15:45", "16:00-17:30", "17:45-19:15"]
+        result += "-" * 108 + "\n"
+        result += "Time      |"
+        for i in range(6):
+            result += f"{times[i].center(15)}|"
+        result += "\n"
+        for i in range(7):
+            result += "-" * 108 + "\n"
+            result += f"{days[i].ljust(10)}|"
+            for j in range(6):
+                for lesson in self.lessons[i]:
+                    if lesson.time.start_time == times[j].split('-')[0]:
+                        result += f"{lesson.subject.name.center(15)}|"
+                        break
+                else:
+                    result += " " * 15 + "|"
+            result += "\n"
+            result += " " * 10 + "|"
+            for j in range(6):
+                for lesson in self.lessons[i]:
+                    if lesson.time.start_time == times[j].split('-')[0]:
+                        result += f"{lesson.teacher.name.center(15)}|"
+                        break
+            result += "\n"
+            result += " " * 10 + "|"
+            for j in range(6):
+                for lesson in self.lessons[i]:
+                    if lesson.time.start_time == times[j].split('-')[0]:
+                        result += f"{lesson.teacher.name.center(15)}|"
+                        break
+                else:
+                    result += " " * 15 + "|"
+            result += "\n"
+        result += "-" * 108 + "\n"
+        return result
 
 class Time:
     def __init__(self,):
@@ -138,11 +186,11 @@ print(m["number"])
 
 arr = [1, 2, 3, 4, 5]
 print(arr[2])
-
+room11 = Room(11, "11")
 math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
-lesson1 = Lesson(1, math, group1,)
+lesson1 = Lesson(1, math, group1, room11, teacher)
 #teacher.remove_subject(physics)  # This will raise a ValueError
 schedule = (1, group1, lesson1, teacher)
 print(teacher)
