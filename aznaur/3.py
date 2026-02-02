@@ -1,4 +1,7 @@
+import time
+
 class Room:
+
     def __init__(self, id, name):
         self.id = id
         self.name = name
@@ -83,31 +86,83 @@ class Teacher:
 #Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher), str, создать экземпляр класса Lesson
     
 class Lesson:
-    def __init__(self, id, subject, group, room, teacher):
+    def __init__(self, id, subject, group, room, teacher, time):
         self.id = id
         self.subject = subject
         self.group = group
         self.room = room
         self.teacher = teacher
+        self.time = time
 
     def change_room(self, new_room):
-            self.room = new_room     
+        self.room = new_room     
 
     def change_teacher(self, new_teacher):
-            self.teacher = new_teacher
+        self.teacher = new_teacher
     
     def __str__(self):
-        return f"Lesson(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teacher={self.teacher})"
-    
+        return f"Lesson(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teacher={self.teacher}, start_time={self.time.start_time}, end_time={self.time.end_time})"
 
 class Schedule:
-    def __init__(self, id, group, lessons, teacher):
+    def __init__(self, id, group, lessons):
         self.id = id
         self.group = group
-        self.lessons = lessons
-        self.teacher = teacher
+        self.lessons = [[] for _ in range(7)]  # 7 days a week
+        self.add_lessons(lessons)
+    
+    def add_lesson(self, lesson):
+        self.lessons[lesson.time.day].append(lesson)
+        # дома посмотреть как работает sort и lambda
+        self.lessons[lesson.time.day].sort(key=lambda x: x.time.start_time)
+    
+    def add_lessons(self, lessons):
+        for lesson in lessons:
+            self.add_lesson(lesson)
+    # добавить номер комнаты и учителя в расписани(с новой строки) тоесть каждый день недели занимае 3 строчки
+    def __str__(self):
+        result = f"Schedule(id={self.id}, group={self.group.name})\n"
+        days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        times = ["09:00-10:30", "10:45-12:15", "12:30-14:00", "14:15-15:45", "16:00-17:30", "17:45-19:15"]
+        result += "-" * 108 + "\n"
+        result += "Time      |"
+        for i in range(6):
+            result += f"{times[i].center(15)}|"
+        result += "\n"
+        for i in range(7):
+            result += "-" * 108 + "\n"
+            result += f"{days[i].ljust(10)}|"
+            for j in range(6):
+                for lesson in self.lessons[i]:
+                    if lesson.time.start_time == times[j].split('-')[0]:
+                        result += f"{lesson.subject.name.center(15)}|"
+                        break
+                else:
+                    result += " " * 15 + "|"
+            result += "\n"
+            result += " " * 10 + "|"
+            for j in range(6):
+                for lesson in self.lessons[i]:
+                    if lesson.time.start_time == times[j].split('-')[0]:
+                        result += f"{lesson.teacher.name.center(15)}|"
+                        break
+            result += "\n"
+            result += " " * 10 + "|"
+            for j in range(6):
+                for lesson in self.lessons[i]:
+                    if lesson.time.start_time == times[j].split('-')[0]:
+                        result += f"{lesson.room.name.center(15)}|"
+                        break
+                else:
+                    result += " " * 15 + "|"
+            result += "\n"
+        result += "-" * 108 + "\n"
+        return result
 
-
+class Time:
+    def __init__(self, day, start_time, end_time):
+        self.day = day
+        self.start_time = start_time
+        self.end_time = end_time
        
 
 
@@ -133,14 +188,16 @@ print(m["number"])
 
 arr = [1, 2, 3, 4, 5]
 print(arr[2])
-
+room11 = Room(11, "11")
 math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
-lesson1 = Lesson(1, math, group1, rom1, teacher)
+time1 = Time(0, "09:00", "10:30")
+lesson1 = Lesson(1, math, group1, room11, teacher, time1)
 #teacher.remove_subject(physics)  # This will raise a ValueError
+schedule = Schedule(1, group1, [lesson1])
 print(teacher)
-schedule = (1, group1, lesson1, teacher)
+print(schedule)
 
 # Создать экземпляр класса Lesson и Teacher, вызвать у них все возможные методы
 # Создать класс Schedule смотрите на картинку и создать его экземпляр
