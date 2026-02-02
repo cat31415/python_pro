@@ -127,7 +127,7 @@ student1.change_group(group2)
 print(student1)
 print(group1)
 print(group2)
-
+rom1 = Room(1, "rom1")
 m = {"key": "value", "number": 42}
 print(m["number"])
 
@@ -137,8 +137,10 @@ print(arr[2])
 math = Subject(1, "Mathematics")
 physics = Subject(2, "Physics")
 teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
-lesson1 = Lesson(1, math, group1,)
+lesson1 = Lesson(1, math, group1, rom1, teacher)
 #teacher.remove_subject(physics)  # This will raise a ValueError
 print(teacher)
+schedule = (1, group1, lesson1, teacher)
 
-
+# Создать экземпляр класса Lesson и Teacher, вызвать у них все возможные методы
+# Создать класс Schedule смотрите на картинку и создать его экземпляр
