@@ -59,12 +59,16 @@ class Teacher_BD:
     def add_teacher(self, teacher):
         if str(teacher.id) in self.data:
             raise ValueError("Teacher with this id already exists")
+        print(teacher)
         self.data[teacher.id] = {
             "name": teacher.name,
             "login": teacher.login,
             "password": teacher.password,
-            "subjects": teacher.subjects.copy()
+            "subjects": []
         }
+        for subject in teacher.subjects:
+            self.data[teacher.id]["subjects"].append(subject.id)
+        print(self.data)
         self.save()
 
     def remove_teacher(self, teacher_id):

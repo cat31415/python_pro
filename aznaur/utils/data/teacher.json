@@ -4,4 +4,7 @@
         "login": "smith",
         "password": "teachpass",
         "subjects": [
-            
+            1
+        ]
+    }
+}
