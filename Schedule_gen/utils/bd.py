@@ -17,7 +17,7 @@ class Students_BD:
     def add_student(self, student):
         if str(student.id) in self.data:
             raise ValueError("Student with this id already exists")
-        self.data[student.id] = {
+        self.data[str(student.id)] = {
             "name": student.name,
             "login": student.login,
             "password": student.password,
