@@ -37,4 +37,23 @@ print(schedule_group1)
 #teacher.remove_subject(physics)  # This will raise a ValueError
 print(teacher)
 
+students_bd = Students_BD()
+try:
+    students_bd.add_student(student1)
+except ValueError as e:
+    print(f"Warning: {e}")
+    
+try:
+    students_bd.add_student(student2)
+except ValueError as e:
+    print(f"Warning: {e}")
 
+try:
+    students_bd.add_student(student3)
+except ValueError as e:
+    print(f"Warning: {e}")
+    
+try:
+    students_bd.remove_student(student2.id)
+except ValueError as e:
+    print(f"Warning: {e}")
