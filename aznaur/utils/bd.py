@@ -43,7 +43,8 @@ class Students_BD:
     def save(self):
         with open(self.path, 'w') as f:
             json.dump(self.data, f, indent=4)
-            
+
+           
 class Teacher_BD:
     def __init__(self):
         cur_dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -51,10 +52,10 @@ class Teacher_BD:
         try:
             with open(self.path, 'r') as f:
                 self.data = json.load(f)
+                self.data = {}
         except FileNotFoundError:
             with open(self.path, 'w') as f:
                 json.dump({}, f)
-                self.data = {}
 
     def add_teacher(self, teacher):
         if str(teacher.id) in self.data:
