@@ -37,3 +37,5 @@ class Students_BD:
             
 class Teacher_BD:
     pass
+
+#Доделать бд учителей, сделать бд предметов и групп

@@ -9,9 +9,7 @@ class Subject:
         self.name = name
     
     def __str__(self):
-        return f"Subject(id={self.id},"
-
-    
+        return f"Subject(id={self.id}, name={self.name})"
 
 class Group:
     def __init__(self, id, name, students, schedule):
