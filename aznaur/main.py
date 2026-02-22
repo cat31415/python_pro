@@ -78,3 +78,9 @@ try:
     group_BD.add_group(group1)
 except ValueError as e:
     print(f"Warning: {e}") 
+
+lesson_BD = Lesson_BD()
+try:
+    lesson_BD.add_lesson(lesson1)
+except ValueError as e:
+    print(f"Warning: {e}")     

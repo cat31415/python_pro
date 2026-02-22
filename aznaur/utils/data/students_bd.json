@@ -5,12 +5,6 @@
         "password": "pass1",
         "group": "2"
     },
-    "2": {
-        "name": "Bob",
-        "login": "bob456",
-        "password": "pass2",
-        "group": null
-    },
     "3": {
         "name": "Charlie",
         "login": "charlie789",

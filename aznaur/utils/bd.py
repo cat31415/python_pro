@@ -147,7 +147,40 @@ class Group_BD:
         with open(self.path, 'w') as f:
             json.dump(self.data, f, indent=4) 
              
+class Lesson_BD:
+    def __init__(self):
+        cur_dir_path = os.path.dirname(os.path.abspath(__file__))
+        self.path = os.path.join(cur_dir_path, 'data', 'lesson.json')
+        self.data = {}
+        try:
+            with open(self.path, 'r') as f:
+                self.data = json.load(f)
+        except FileNotFoundError:
+            with open(self.path, 'w') as f:
+                json.dump({}, f)
 
+    def add_lesson(self, lesson):
+        if str(lesson.id) in self.data:
+            raise ValueError("lesson with this id already exists")
+        self.data[lesson.id] = {
+            "id" : str(lesson.id),
+            "subject": str(lesson.subject.id),
+            "group": str(lesson.group.id),
+            "room" : str(lesson.room.id),
+            "teacher": str(lesson.teacher.id),
+            "time": str(lesson.time.id)
+        }
+        self.save()
+
+    def remove_lesson(self,lesson_id):
+        if str(lesson_id) not in self.data:
+            raise ValueError("lesson with this id does not exist")
+        del self.data[str(lesson_id)]
+        self.save()
+
+    def save(self):
+        with open(self.path, 'w') as f:
+            json.dump(self.data, f, indent=4) 
 
 
  
