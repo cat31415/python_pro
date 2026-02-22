@@ -61,10 +61,20 @@ except ValueError as e:
     print(f"Warning: {e}")
 
 
-teacher_BD = Teacher_BD()
+# teacher_BD = Teacher_BD()
+# try:
+#     teacher_BD.add_teacher(teacher)
+# except ValueError as e:
+#     print(f"Warning: {e}")    
+
+subjects_BD = Subjects_BD()
 try:
-    teacher_BD.add_teacher(teacher)
+    subjects_BD.add_subjects(math)
 except ValueError as e:
-    print(f"Warning: {e}")    
+    print(f"Warning: {e}")   
 
-
+group_BD = Group_BD()
+try:
+    group_BD.add_group(group1)
+except ValueError as e:
+    print(f"Warning: {e}") 

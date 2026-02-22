@@ -10,5 +10,11 @@
         "login": "charlie789",
         "password": "pass3",
         "group": null
+    },
+    "2": {
+        "name": "Bob",
+        "login": "bob456",
+        "password": "pass2",
+        "group": null
     }
 }

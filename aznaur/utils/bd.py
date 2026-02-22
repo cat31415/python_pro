@@ -45,10 +45,47 @@ class Students_BD:
             json.dump(self.data, f, indent=4)
 
            
-class Teacher_BD:
+# class Teacher_BD:
+#     def __init__(self):
+#         cur_dir_path = os.path.dirname(os.path.abspath(__file__))
+#         self.path = os.path.join(cur_dir_path, 'data', 'teacher.json')
+#         try:
+#             with open(self.path, 'r') as f:
+#                 self.data = json.load(f)
+#                 self.data = {}
+#         except FileNotFoundError:
+#             with open(self.path, 'w') as f:
+#                 json.dump({}, f)
+
+#     def add_teacher(self, teacher):
+#         if str(teacher.id) in self.data:
+#             raise ValueError("Teacher with this id already exists")
+#         print(teacher)
+#         self.data[teacher.id] = {
+#             "name": teacher.name,
+#             "login": teacher.login,
+#             "password": teacher.password,
+#             "subjects": []
+#         }
+#         for subject in teacher.subjects:
+#             self.data[teacher.id]["subjects"].append(subject.id)
+#         print(self.data)
+#         self.save()
+
+#     def remove_teacher(self, teacher_id):
+#         if str(teacher_id) not in self.data:
+#             raise ValueError("Teacher with this id does not exist")
+#         del self.data[str(teacher_id)]
+#         self.save()
+
+#     def save(self):
+#         with open(self.path, 'w') as f:
+#             json.dump(self.data, f, indent=4) 
+
+class Subjects_BD:
     def __init__(self):
         cur_dir_path = os.path.dirname(os.path.abspath(__file__))
-        self.path = os.path.join(cur_dir_path, 'data', 'teacher.json')
+        self.path = os.path.join(cur_dir_path, 'data', 'subjects.json')
         try:
             with open(self.path, 'r') as f:
                 self.data = json.load(f)
@@ -57,30 +94,61 @@ class Teacher_BD:
             with open(self.path, 'w') as f:
                 json.dump({}, f)
 
-    def add_teacher(self, teacher):
-        if str(teacher.id) in self.data:
-            raise ValueError("Teacher with this id already exists")
-        print(teacher)
-        self.data[teacher.id] = {
-            "name": teacher.name,
-            "login": teacher.login,
-            "password": teacher.password,
-            "subjects": []
+    def add_subjects(self, subjects):
+        if str(subjects.id) in self.data:
+            raise ValueError("subjects with this id already exists")
+        print(subjects)
+        self.data[subjects.id] = {
+            "id" : subjects.id,
+            "name": subjects.name,
         }
-        for subject in teacher.subjects:
-            self.data[teacher.id]["subjects"].append(subject.id)
-        print(self.data)
         self.save()
 
-    def remove_teacher(self, teacher_id):
-        if str(teacher_id) not in self.data:
-            raise ValueError("Teacher with this id does not exist")
-        del self.data[str(teacher_id)]
+    def remove_subjects(self, subjects_id):
+        if str(subjects_id) not in self.data:
+            raise ValueError("Subjects with this id does not exist")
+        del self.data[str(subjects_id)]
         self.save()
 
     def save(self):
         with open(self.path, 'w') as f:
-            json.dump(self.data, f, indent=4)    
+            json.dump(self.data, f, indent=4) 
+
+
+class Group_BD:
+    def __init__(self):
+        cur_dir_path = os.path.dirname(os.path.abspath(__file__))
+        self.path = os.path.join(cur_dir_path, 'data', 'group.json')
+        try:
+            with open(self.path, 'r') as f:
+                self.data = json.load(f)
+                self.data = {}
+        except FileNotFoundError:
+            with open(self.path, 'w') as f:
+                json.dump({}, f)
+
+    def add_group(self, group):
+        if str(group.id) in self.data:
+            raise ValueError("group with this id already exists")
+        print(group)
+        self.data[group.id] = {
+            "id" : group.id,
+            "name": group.name,
+            "students": [],
+            "schedule" : group.schedule
+        }
+        self.save()
+
+    def remove_group(self, group_id):
+        if str(group_id) not in self.data:
+            raise ValueError("group with this id does not exist")
+        del self.data[str(group_id)]
+        self.save()
+
+    def save(self):
+        with open(self.path, 'w') as f:
+            json.dump(self.data, f, indent=4) 
+             
 
 
 
