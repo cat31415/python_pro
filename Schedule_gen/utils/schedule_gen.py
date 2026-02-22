@@ -1,7 +1,4 @@
-import time
-
 class Room:
-
     def __init__(self, id, name):
         self.id = id
         self.name = name
@@ -83,7 +80,7 @@ class Teacher:
         
  
         
-#Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher), str, создать экземпляр класса Lesson
+#Создать класс Lesson(id, subject, group, room, teacher) mетоды change_room(new_room), change_teacher(new_teacher), str, создать экземпляр класса Lesson, попробовать вызвать все его методы
     
 class Lesson:
     def __init__(self, id, subject, group, room, teacher, time):
@@ -102,6 +99,7 @@ class Lesson:
     
     def __str__(self):
         return f"Lesson(id={self.id}, subject={self.subject}, group={self.group}, room={self.room}, teacher={self.teacher}, start_time={self.time.start_time}, end_time={self.time.end_time})"
+    
 
 class Schedule:
     def __init__(self, id, group, lessons):
@@ -130,7 +128,7 @@ class Schedule:
         result += "\n"
         for i in range(7):
             result += "-" * 108 + "\n"
-            result += f"{days[i].ljust(10)}|"
+            result += " " * 10 + "|"
             for j in range(6):
                 for lesson in self.lessons[i]:
                     if lesson.time.start_time == times[j].split('-')[0]:
@@ -139,12 +137,14 @@ class Schedule:
                 else:
                     result += " " * 15 + "|"
             result += "\n"
-            result += " " * 10 + "|"
+            result += f"{days[i].ljust(10)}|"
             for j in range(6):
                 for lesson in self.lessons[i]:
                     if lesson.time.start_time == times[j].split('-')[0]:
                         result += f"{lesson.room.name.center(15)}|"
                         break
+                else:
+                    result += " " * 15 + "|"
             result += "\n"
             result += " " * 10 + "|"
             for j in range(6):
@@ -155,49 +155,14 @@ class Schedule:
                 else:
                     result += " " * 15 + "|"
             result += "\n"
+            
         result += "-" * 108 + "\n"
         return result
+
 
 class Time:
     def __init__(self, day, start_time, end_time):
         self.day = day
         self.start_time = start_time
         self.end_time = end_time
-       
 
-
-student1 = Student(1, "Alice", "alice123", "pass1", None)
-student2 = Student(2, "Bob", "bob456", "pass2", None)
-student3 = Student(3, "Charlie", "charlie789", "pass3", None)
-students = [student1, student2, student3]
-group1 = Group(1, "Group A", students, None)
-print(group1)
-student4 = Student(4, "David", "david101", "pass4", None)
-students[0] = student4
-group1.students[0] = student4
-print(group1)
-group1.add_student_to_group(student1)
-group2 = Group(2, "Group B", [], None)
-student1.change_group(group2)
-print(student1)
-print(group1)
-print(group2)
-rom1 = Room(1, "rom1")
-m = {"key": "value", "number": 42}
-print(m["number"])
-
-arr = [1, 2, 3, 4, 5]
-print(arr[2])
-room11 = Room(11, "11")
-math = Subject(1, "Mathematics")
-physics = Subject(2, "Physics")
-teacher = Teacher(1, "Mr. Smith", "smith", "teachpass", [math])
-time1 = Time(0, "09:00", "10:30")
-lesson1 = Lesson(1, math, group1, room11, teacher, time1)
-#teacher.remove_subject(physics)  # This will raise a ValueError
-schedule = Schedule(1, group1, [lesson1])
-print(teacher)
-print(schedule)
-
-# Создать экземпляр класса Lesson и Teacher, вызвать у них все возможные методы
-# Создать класс Schedule смотрите на картинку и создать его экземпляр

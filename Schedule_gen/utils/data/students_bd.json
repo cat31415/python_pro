@@ -1,0 +1,14 @@
+{
+    "1": {
+        "name": "Alice",
+        "login": "alice123",
+        "password": "pass1",
+        "group": "Group B"
+    },
+    "3": {
+        "name": "Charlie",
+        "login": "charlie789",
+        "password": "pass3",
+        "group": null
+    }
+}
