@@ -57,3 +57,22 @@ try:
     students_bd.remove_student(student2.id)
 except ValueError as e:
     print(f"Warning: {e}")
+
+group_bd = Group_BD()
+try:
+    group_bd.add_group(group1)
+except ValueError as e:
+    print(f"Warning: {e}")
+
+teacher_bd = Teacher_BD()
+try:
+    teacher_bd.add_teacher(teacher)
+except ValueError as e:
+    print(f"Warning: {e}")
+
+subject_bd = Subjects_BD()
+try:
+    subject_bd.add_subjects(math)
+except ValueError as e:
+    print(f"Warning: {e}")
+
