@@ -168,7 +168,7 @@ class Lesson_BD:
             "group": str(lesson.group.id),
             "room" : str(lesson.room.id),
             "teacher": str(lesson.teacher.id),
-            "time": str(lesson.time.id)
+            "time": str(lesson.time.id) #исправь время есть начальное и конечное
         }
         self.save()
 
