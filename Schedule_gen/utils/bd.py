@@ -1,5 +1,4 @@
 # попробовать импортировать schedule_gen добавить функцию сохранения дневника в тектовый документ функция принимает готовый schedule и сохраняет его в файл вызвать эту функцию через main.py
-
 import json
 from . import schedule_gen
 import os
@@ -30,7 +29,7 @@ class Students_BD:
             "name": student.name,
             "login": student.login,
             "password": student.password,
-            "group": student.group.name if student.group else None
+            "group": str(student.group.id) if student.group else None
         }
         self.save()
         
