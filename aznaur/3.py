@@ -143,14 +143,14 @@ class Schedule:
             for j in range(6):
                 for lesson in self.lessons[i]:
                     if lesson.time.start_time == times[j].split('-')[0]:
-                        result += f"{lesson.teacher.name.center(15)}|"
+                        result += f"{lesson.room.name.center(15)}|"
                         break
             result += "\n"
             result += " " * 10 + "|"
             for j in range(6):
                 for lesson in self.lessons[i]:
                     if lesson.time.start_time == times[j].split('-')[0]:
-                        result += f"{lesson.room.name.center(15)}|"
+                        result += f"{lesson.teacher.name.center(15)}|"
                         break
                 else:
                     result += " " * 15 + "|"
