@@ -1,5 +1,4 @@
 # попробовать импортировать schedule_gen добавить функцию сохранения дневника в тектовый документ функция принимает готовый schedule и сохраняет его в файл вызвать эту функцию через main.py
-
 import json
 from . import schedule_gen
 import os
@@ -15,13 +14,13 @@ class Students_BD:
     def __init__(self):
         cur_dir_path = os.path.dirname(os.path.abspath(__file__))
         self.path = os.path.join(cur_dir_path, 'data', 'students_bd.json')
+        self.data = {}
         try:
             with open(self.path, 'r') as f:
                 self.data = json.load(f)
         except FileNotFoundError:
             with open(self.path, 'w') as f:
                 json.dump({}, f)
-                self.data = {}
         
     def add_student(self, student):
         if str(student.id) in self.data:
@@ -30,14 +29,14 @@ class Students_BD:
             "name": student.name,
             "login": student.login,
             "password": student.password,
-            "group": student.group.name if student.group else None
+            "group": str(student.group.id) if student.group else None
         }
         self.save()
         
-    def remove_student(self, teacher_id):
-        if str(teacher_id) not in self.data:
+    def remove_student(self, student_id):
+        if str(student_id) not in self.data:
             raise ValueError("Student with this id does not exist")
-        del self.data[str(teacher_id)]
+        del self.data[str(student_id)]
         self.save()
     
     def save(self):
@@ -45,51 +44,50 @@ class Students_BD:
             json.dump(self.data, f, indent=4)
 
            
-# class Teacher_BD:
-#     def __init__(self):
-#         cur_dir_path = os.path.dirname(os.path.abspath(__file__))
-#         self.path = os.path.join(cur_dir_path, 'data', 'teacher.json')
-#         try:
-#             with open(self.path, 'r') as f:
-#                 self.data = json.load(f)
-#                 self.data = {}
-#         except FileNotFoundError:
-#             with open(self.path, 'w') as f:
-#                 json.dump({}, f)
+class Teacher_BD:
+    def __init__(self):
+        cur_dir_path = os.path.dirname(os.path.abspath(__file__))
+        self.path = os.path.join(cur_dir_path, 'data', 'teacher.json')
+        self.data = {}
+        try:
+            with open(self.path, 'r') as f:
+                self.data = json.load(f)
+        except FileNotFoundError:
+            with open(self.path, 'w') as f:
+                json.dump({}, f)
 
-#     def add_teacher(self, teacher):
-#         if str(teacher.id) in self.data:
-#             raise ValueError("Teacher with this id already exists")
-#         print(teacher)
-#         self.data[teacher.id] = {
-#             "name": teacher.name,
-#             "login": teacher.login,
-#             "password": teacher.password,
-#             "subjects": []
-#         }
-#         for subject in teacher.subjects:
-#             self.data[teacher.id]["subjects"].append(subject.id)
-#         print(self.data)
-#         self.save()
+    def add_teacher(self, teacher):
+        if str(teacher.id) in self.data:
+            raise ValueError("Teacher with this id already exists")
+        print(teacher)
+        self.data[teacher.id] = {
+            "name": teacher.name,
+            "login": teacher.login,
+            "password": teacher.password,
+            "subjects": []
+        }
+        for subject in teacher.subjects:
+            self.data[teacher.id]["subjects"].append(str(subject.id))
+        self.save()
 
-#     def remove_teacher(self, teacher_id):
-#         if str(teacher_id) not in self.data:
-#             raise ValueError("Teacher with this id does not exist")
-#         del self.data[str(teacher_id)]
-#         self.save()
+    def remove_teacher(self, teacher_id):
+        if str(teacher_id) not in self.data:
+            raise ValueError("Teacher with this id does not exist")
+        del self.data[str(teacher_id)]
+        self.save()
 
-#     def save(self):
-#         with open(self.path, 'w') as f:
-#             json.dump(self.data, f, indent=4) 
+    def save(self):
+        with open(self.path, 'w') as f:
+            json.dump(self.data, f, indent=4) 
 
 class Subjects_BD:
     def __init__(self):
         cur_dir_path = os.path.dirname(os.path.abspath(__file__))
         self.path = os.path.join(cur_dir_path, 'data', 'subjects.json')
+        self.data = {}
         try:
             with open(self.path, 'r') as f:
                 self.data = json.load(f)
-                self.data = {}
         except FileNotFoundError:
             with open(self.path, 'w') as f:
                 json.dump({}, f)
@@ -97,7 +95,6 @@ class Subjects_BD:
     def add_subjects(self, subjects):
         if str(subjects.id) in self.data:
             raise ValueError("subjects with this id already exists")
-        print(subjects)
         self.data[subjects.id] = {
             "id" : subjects.id,
             "name": subjects.name,
@@ -119,10 +116,10 @@ class Group_BD:
     def __init__(self):
         cur_dir_path = os.path.dirname(os.path.abspath(__file__))
         self.path = os.path.join(cur_dir_path, 'data', 'group.json')
+        self.data = {}
         try:
             with open(self.path, 'r') as f:
                 self.data = json.load(f)
-                self.data = {}
         except FileNotFoundError:
             with open(self.path, 'w') as f:
                 json.dump({}, f)
@@ -130,13 +127,14 @@ class Group_BD:
     def add_group(self, group):
         if str(group.id) in self.data:
             raise ValueError("group with this id already exists")
-        print(group)
         self.data[group.id] = {
             "id" : group.id,
             "name": group.name,
             "students": [],
-            "schedule" : group.schedule
+            "schedule" : str(group.schedule.id) if group.schedule else None
         }
+        for student in group.students:
+            self.data[group.id]["students"].append(str(student.id))
         self.save()
 
     def remove_group(self, group_id):

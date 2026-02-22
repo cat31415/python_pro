@@ -2,7 +2,11 @@
     "1": {
         "id": 1,
         "name": "Group A",
-        "students": [],
+        "students": [
+            "4",
+            "2",
+            "3"
+        ],
         "schedule": null
     }
 }
