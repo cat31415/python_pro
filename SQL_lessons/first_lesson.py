@@ -29,7 +29,8 @@ conn.commit()
 students = [
     ("Иван", 15, 85),
     ("Мария", 14, 90),
-    ("Олег", 16, 78)
+    ("Олег", 16, 78),
+    ("Игорь", 15, 85),
 ]
 
 cursor.executemany("""
@@ -39,7 +40,12 @@ VALUES (%s, %s, %s);
 
 conn.commit()
 
-cursor.execute("SELECT * FROM students")
+# Получить только фамилию и оценку
+cursor.execute('''SELECT name, mark FROM students
+               where age > 14
+               order by mark
+               ''')
+
 rows = cursor.fetchall()
 
 # print(rows)
@@ -47,23 +53,19 @@ rows = cursor.fetchall()
 for row in rows:
     print(row)
 
+df = pd.read_sql("SELECT id, name, mark FROM students", conn)
+print(df)
+
+
+df['mark'].value_counts().plot(kind='bar')
+plt.title("Оценки студентов")
+plt.xlabel("Оценка")
+plt.ylabel("Количество")
+plt.show()
+
 conn.close()
 
 
 
 
 
-
-
-#import pandas as pd
-
-# df = pd.read_sql("SELECT * FROM students", conn)
-# print(df)
-
-# import matplotlib.pyplot as plt
-
-# df['age'].value_counts().plot(kind='bar')
-# plt.title("Возраст студентов")
-# plt.xlabel("Возраст")
-# plt.ylabel("Количество")
-# plt.show()
