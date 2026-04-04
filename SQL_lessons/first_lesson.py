@@ -53,13 +53,13 @@ rows = cursor.fetchall()
 for row in rows:
     print(row)
 
-df = pd.read_sql("SELECT id, name, mark FROM students", conn)
+df = pd.read_sql("SELECT id, name, age FROM students", conn)
 print(df)
 
 
-df['mark'].value_counts().plot(kind='bar')
-plt.title("Оценки студентов")
-plt.xlabel("Оценка")
+df['age'].value_counts().plot(kind='bar')
+plt.title("Возраст студентов")
+plt.xlabel("Возраст")
 plt.ylabel("Количество")
 plt.show()
 
