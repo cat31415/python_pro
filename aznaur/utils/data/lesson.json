@@ -1,0 +1,11 @@
+{
+    "1": {
+        "id": "1",
+        "subject": "1",
+        "group": "1",
+        "room": "101",
+        "teacher": "1",
+        "start_time": "09:00",
+        "end_time": "10:30"
+    }
+}

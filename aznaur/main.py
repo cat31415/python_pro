@@ -39,4 +39,54 @@ print(teacher)
 
 save_(schedule_group1)
 
+students_bd = Students_BD()
+try:
+    students_bd.add_student(student1)
+except ValueError as e:
+    print(f"Warning: {e}")
+    
+try:
+    students_bd.add_student(student2)
+except ValueError as e:
+    print(f"Warning: {e}")
 
+try:
+    students_bd.add_student(student3)
+except ValueError as e:
+    print(f"Warning: {e}")
+    
+try:
+    students_bd.remove_student(student2.id)
+except ValueError as e:
+    print(f"Warning: {e}")
+
+
+teacher_BD = Teacher_BD()
+try:
+    teacher_BD.add_teacher(teacher)
+except ValueError as e:
+    print(f"Warning: {e}")    
+
+subjects_BD = Subjects_BD()
+try:
+    subjects_BD.add_subjects(math)
+except ValueError as e:
+    print(f"Warning: {e}")   
+
+group_BD = Group_BD()
+try:
+    group_BD.add_group(group1)
+except ValueError as e:
+    print(f"Warning: {e}") 
+
+lesson_BD = Lesson_BD()
+try:
+    lesson_BD.add_lesson(lesson1)
+except ValueError as e:
+    print(f"Warning: {e}")    
+
+    room_BD = Room_BD()
+try:
+    room_BD.add_room(room101)
+except ValueError as e:
+    print(f"Warning: {e}")    
