@@ -63,6 +63,7 @@ plt.xlabel("Оценка")
 plt.ylabel("Количество")
 plt.show()
 
+#вывести график возрастов
 conn.close()
 
 
