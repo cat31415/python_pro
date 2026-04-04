@@ -2,6 +2,9 @@ class Room:
     def __init__(self, id, name):
         self.id = id
         self.name = name
+        
+        def __str__(self):
+            return f"Room(id={self.id}, name={self.name})"
 
 class Subject:
     def __init__(self, id, name):
@@ -168,4 +171,3 @@ class Time:
         self.day = day
         self.start_time = start_time
         self.end_time = end_time
-

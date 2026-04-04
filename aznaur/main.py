@@ -83,4 +83,10 @@ lesson_BD = Lesson_BD()
 try:
     lesson_BD.add_lesson(lesson1)
 except ValueError as e:
-    print(f"Warning: {e}")     
+    print(f"Warning: {e}")    
+
+    room_BD = Room_BD()
+try:
+    room_BD.add_room(room101)
+except ValueError as e:
+    print(f"Warning: {e}")    
