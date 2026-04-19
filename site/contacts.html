@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Мой сайт</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <!--<style>
+      body {
+        background-color: #FFF8EC;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        text-align: center;
+      }
+      h1{
+        color: #546B41;
+        font-family: Arial, sans-serif;
+        font-size: 62px;
+        font-weight: bold;
+      }
+      h2, p{
+        color: #A2CB8B;
+        font-family: Arial, sans-serif;
+      }
+     </style>-->
+    <style>
+      body {
+        background-color: #fff8ec;
+      }
+      .text-light-color {
+        color: #99ad7a;
+      }
+      .text-green {
+        color: #546b41;
+      }
+      .text-body-emphasis-my {
+        --bs-text-opacity: 1;
+        color: #546b41 !important;
+      }
+      .btn-green {
+        background-color: #546b41;
+        color: white;
+      }
+    </style>
+
+    
+  </head>
+  <body>
+    <header
+      class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom"
+    >
+      <a
+        href="/"
+        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+      >
+        <svg class="bi me-2" width="40" height="32" aria-hidden="true">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">Пример</span>
+      </a>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a
+            href="index.html"
+            class="nav-link active btn-green"
+            style="background-color: #546b41; color: white"
+            aria-current="page"
+            >Домой</a
+          >
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link text-green">Функции</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link text-green">Цены</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link text-green">Вопросы</a>
+        </li>
+        <li class="nav-item">
+          <a href="contacts.html" class="nav-link text-green">О нас</a>
+        </li>
+      </ul>
+    </header>
+
+    <div class="container px-5">
+      <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A7e2d5b90eb2b984a4bdcec31ff0c809ac035d43ae46e9ff067a813c6ef83db84&amp;source=constructor" width="981" height="518" frameborder="0"></iframe>
+    </div>
+
+    <div class="container px-4 py-5" id="featured-3">
+      <h2 class="pb-2 border-bottom">Наши контакты</h2>
+      <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <div class="feature col">
+          <div
+            class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
+          >
+            <svg class="bi" width="1em" height="1em" aria-hidden="true">
+              <use xlink:href="#collection"></use>
+            </svg>
+          </div>
+          <h3 class="fs-2 text-body-emphasis">Адрес</h3>
+          <p>1234 Улица Пример, Город, Страна</p>
+        </div>
+        <div class="feature col">
+          <div
+            class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
+          >
+            <svg class="bi" width="1em" height="1em" aria-hidden="true">
+              <use xlink:href="#people-circle"></use>
+            </svg>
+          </div>
+          <h3 class="fs-2 text-body-emphasis">Телефон</h3>
+          <p>+7 (123) 456-78-90</p>
+        </div>
+        <div class="feature col">
+          <div
+            class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
+          >
+            <svg class="bi" width="1em" height="1em" aria-hidden="true">
+              <use xlink:href="#toggles2"></use>
+            </svg>
+          </div>
+          <h3 class="fs-2 text-body-emphasis">Email</h3>
+          <p>example@example.com</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
