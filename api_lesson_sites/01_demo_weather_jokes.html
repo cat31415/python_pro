@@ -80,7 +80,17 @@
     }
 
     async function loadJoke() {
-      //https://v2.jokeapi.dev/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist,explicit
+      let box = document.getElementById("jokeResult");
+      box.innerHTML = "Загрузка...";
+      try {
+        const url = "https://v2.jokeapi.dev/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
+        const response = await fetch(url);
+        const data = await response.json();
+
+        box.innerHTML = `${data.joke}`;
+      } catch (error) {
+        box.innerHTML = "Ошибка загрузки шутки.";
+      }
     }
 
 
