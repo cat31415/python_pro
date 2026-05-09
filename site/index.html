@@ -38,14 +38,27 @@
         color: #546b41;
       }
       .text-body-emphasis-my {
-          --bs-text-opacity: 1;
-          color: #546B41 !important;
+        --bs-text-opacity: 1;
+        color: #546b41 !important;
       }
       .btn-green {
         background-color: #546b41;
         color: white;
       }
     </style>
+
+    <script>
+      function sayHellow() {
+        alert("Приветствую вас на моем сайте!");
+      }
+      function showText() {
+        document.getElementById("CenteterText").innerText = "Вы нажали на кнопку!";
+      }
+      function getAndShowText(){
+        let inputText = "Вы ищите " + document.getElementById("inputText").value;
+        document.getElementById("displayText").innerText = inputText;
+      }
+    </script>
   </head>
   <body>
     <header
@@ -80,13 +93,15 @@
           <a href="#" class="nav-link text-green">Вопросы</a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link text-green">О нас</a>
+          <a href="contacts.html" class="nav-link text-green">О нас</a>
         </li>
       </ul>
     </header>
 
     <div class="px-4 pt-5 my-5 text-center border-bottom">
-      <h1 class="display-4 fw-bold text-body-emphasis-my">Centered screenshot</h1>
+      <h1 id="CenteterText" class="display-4 fw-bold text-body-emphasis-my">
+        Centered screenshot
+      </h1>
       <div class="col-lg-6 mx-auto">
         <p class="lead mb-4">
           Quickly design and customize responsive mobile-first sites with
@@ -95,10 +110,18 @@
           prebuilt components, and powerful JavaScript plugins.
         </p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-          <button type="button" class="btn btn-green btn-lg px-4 me-sm-3">
+          <button
+            type="button"
+            onclick="sayHellow()"
+            class="btn btn-green btn-lg px-4 me-sm-3"
+          >
             Primary button
           </button>
-          <button type="button" class="btn btn-outline-secondary btn-lg px-4">
+          <button
+            onclick="showText()"
+            type="button"
+            class="btn btn-outline-secondary btn-lg px-4"
+          >
             Secondary
           </button>
         </div>
@@ -117,5 +140,39 @@
       </div>
     </div>
     <div class="b-example-divider"></div>
+    <div class="px-4 pt-5 my-5 text-center border-bottom">
+      <h1 class="display-4 fw-bold">Введите текст</h1>
+      <div class="col-lg-6 mx-auto">
+        <input
+      id = "inputText"
+      type="text"
+      class="form-control mx-4 my-5"
+      placeholder="Введите текст"
+      aria-label="Input example"
+    />
   </body>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+          <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">
+            Primary button
+          </button>
+          <button onclick="getAndShowText()" type="button" class="btn btn-outline-secondary btn-lg px-4">
+            Secondary
+          </button>
+        </div>
+        <p id = "displayText">Ваш текст</p>
+      </div>
+      <div class="overflow-hidden" style="max-height: 30vh">
+        <div class="container px-5">
+          <img
+            src="bootstrap-docs.png"
+            class="img-fluid border rounded-3 shadow-lg mb-4"
+            alt="Example image"
+            width="700"
+            height="500"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+    
 </html>
