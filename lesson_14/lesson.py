@@ -16,6 +16,9 @@ hhtp запрос состаит из заголовка и тела запро�
 
 установить FastAPI и Uvicorn для создания веб-приложения на Python:
 pip install fastapi uvicorn
+
+запустить приложение:
+uvicorn lesson:app --reload (--port 8002 не обязательно, по умолчанию используется порт 8000)
 '''
 
 from fastapi import FastAPI
