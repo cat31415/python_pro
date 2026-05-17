@@ -26,8 +26,30 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+users = [
+    {"id": 1, "name": "Alice"},
+    {"id": 2, "name": "Bob"},
+    {"id": 3, "name": "Charlie"},
+    {"id": 4, "name": "Alice"},
+]
+
 @app.get("/")
 def home():
     return {"message": "Hello, World!"}
 
-#Создать ручку get /cat которая возвращает {"message": "Meow!"}
+@app.get("/users")
+def get_users():
+    return {"users": users}
+
+@app.get("/users/{user_id}")
+def get_user(user_id: int):
+    for user in users:
+        if user["id"] == user_id:
+            return {"user": user}
+    return {"error": "User not found"}
+
+#создать ручку /users/name/{user_name}, которая будет возвращать пользователей с именем, совпадающим с user_name
+
+@app.get("/cat")
+def get_cat():
+    return {"message": "Meow!"}
