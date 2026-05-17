@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "python_pro",
+			"path": ".."
+		},
+		{
+			"name": "api_lesson_sites",
+			"path": "../../../Downloads/api_lesson_sites"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "python_pro"
+	}
+}
