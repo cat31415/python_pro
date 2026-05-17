@@ -1,7 +1,7 @@
 /* From Uiverse.io by MikeAndrewDesigner */ 
 
 body{
-   background-color: #091413;
+   background-color: #0f0914;
 }
 
 .ww{
@@ -13,7 +13,7 @@ body{
 .login-wrap {
     width: 300px;           /* Задаем ширину всей форме */
     gap: 15px;              /* Делаем одинаковые отступы между полями и кнопкой */
-    margin: 100px auto;      /* Центрируем саму форму на странице */
+    margin: 200px auto;      /* Центрируем саму форму на странице */
 }
 
 .login-wrap {
@@ -72,7 +72,7 @@ body{
 }
 
 .btn {
-  background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #af40ff);
   color: #fff;
   padding: 16px !important;
 }
@@ -234,6 +234,9 @@ body{
   height: 0;
 }
 
+.rr{
+  color: #af40ff;
+}
 
 
 

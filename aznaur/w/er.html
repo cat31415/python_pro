@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Практика: Cat Mood</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(180deg, #fdf2f8, #ffffff);
+    }
+    .hero {
+      background: linear-gradient(135deg, #db2777, #9333ea);
+      color: white;
+      border-radius: 24px;
+      padding: 40px;
+    }
+    .cat-img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-danger" href="#">Cat Mood</a>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <section class="hero mb-5">
+      <h1 class="display-5 fw-bold">Котик дня</h1>
+      <p class="lead mb-0">Нажмите кнопку и получите случайного котика.</p>
+    </section>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card border-0 shadow rounded-4">
+          <div class="card-body p-4">
+            <div id="catResult" class="mb-4 text-center">
+              <p class="text-muted">Котик появится здесь.</p>
+            </div>
+
+            <button class="btn btn-danger btn-lg w-100" onclick="loadCat()">
+              Показать котика
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function loadCat(){
+      let box = document.getElementById("catResult");
+      box.innerHTML = "загрука...";
+
+      try{
+        const url = "https://cataas.com/cat?json=true";
+        const respons = await fetch(url);
+        const data = await respons.json();
+
+        box.innerHTML =  `<img src="${data.url}" alt="cat" style="max-width: 100%;">`
+      } catch (error) {
+        box.innerHTML = "Ошибка";
+      }
+    }
+  </script>
+</body>
+</html>
