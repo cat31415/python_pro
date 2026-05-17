@@ -29,3 +29,5 @@ app = FastAPI()
 @app.get("/")
 def home():
     return {"message": "Hello, World!"}
+
+#Создать ручку get /cat которая возвращает {"message": "Meow!"}
