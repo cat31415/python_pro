@@ -15,7 +15,7 @@ hhtp запрос состаит из заголовка и тела запро�
     - DELETE: используется для удаления ресурсов на сервере. Запросы DELETE могут изменять состояние сервера.
 
 установить FastAPI и Uvicorn для создания веб-приложения на Python:
-pip install fastapi uvicorn
+pip install fastapi uvicorn pydantic
 
 запустить приложение:
 uvicorn lesson:app --reload (--port 8002 не обязательно, по умолчанию используется порт 8000)
