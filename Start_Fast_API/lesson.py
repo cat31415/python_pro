@@ -59,10 +59,15 @@ def get_cat():
 @app.post("/users/set_name/{user_id}",
           description="Update the name of a user by their ID",
           summary="Update user name")
-def say_hello(user_id: int, name: str = Query(description="New name for the user", example="Alice")):
+def set_name(user_id: int, name: str = Query(description="New name for the user", example="Alice")):
     for user in users:
         if user["id"] == user_id:
             user["name"] = name
             return {"message": f"User {user_id} name updated to {name}"}
     # выводим ошибку, если пользователь не найден
     return {"error": "User not found"}
+
+#  добавить пользователям дату рождения: str в формате "YYYY-MM-DD" и 
+# создать ручку /users/set_birth_date/{user_id}, которая будет обновлять дату
+#  рождения пользователя по id, а также ручку /users/get_birth_date/{user_id}, 
+# которая будет возвращать дату рождения пользователя по id.
