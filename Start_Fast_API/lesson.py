@@ -15,13 +15,13 @@ hhtp запрос состаит из заголовка и тела запро�
     - DELETE: используется для удаления ресурсов на сервере. Запросы DELETE могут изменять состояние сервера.
 
 установить FastAPI и Uvicorn для создания веб-приложения на Python:
-pip install fastapi uvicorn
+pip install fastapi uvicorn pydantic
 
 запустить приложение:
 uvicorn lesson:app --reload (--port 8002 не обязательно, по умолчанию используется порт 8000)
 '''
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -32,6 +32,8 @@ users = [
     {"id": 3, "name": "Charlie"},
     {"id": 4, "name": "Alice"},
 ]
+
+# 127.0.0.1:8000/   
 
 @app.get("/")
 def home():
@@ -53,3 +55,19 @@ def get_user(user_id: int):
 @app.get("/cat")
 def get_cat():
     return {"message": "Meow!"}
+
+@app.post("/users/set_name/{user_id}",
+          description="Update the name of a user by their ID",
+          summary="Update user name")
+def set_name(user_id: int, name: str = Query(description="New name for the user", example="Alice")):
+    for user in users:
+        if user["id"] == user_id:
+            user["name"] = name
+            return {"message": f"User {user_id} name updated to {name}"}
+    # выводим ошибку, если пользователь не найден
+    return {"error": "User not found"}
+
+#  добавить пользователям дату рождения: str в формате "YYYY-MM-DD" и 
+# создать ручку /users/set_birth_date/{user_id}, которая будет обновлять дату
+#  рождения пользователя по id, а также ручку /users/get_birth_date/{user_id}, 
+# которая будет возвращать дату рождения пользователя по id.
