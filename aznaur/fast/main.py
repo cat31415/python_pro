@@ -53,3 +53,36 @@ def get_user(user_id: int):
 @app.get("/cat")
 def get_cat():
     return {"message": "Meow!"}
+
+@app.get("/users/name/{user_name}")
+def get_usr(user_name: str):
+    a = []
+    for us in users:
+        if us["name"] == user_name:
+            a.append(us)
+    return a           
+        
+# {"user":   { "id" : 1, "name": "Alice"}
+# }
+
+# [
+# { "id" : 1, "name": "Alice"},
+# { "id" : 4, "name": "Alice"}
+# ]
+
+@app.get("/users/{user_id}")
+def get_user(user_id: int):
+    for user in users:
+        if user["id"] == user_id:
+            return {"user": user}
+    return {"error": "User not found"}
+
+@app.get("/users/name/{user_name}")
+def get_user(user_name: str): 
+    for user2 in users:
+        if user2["name"] == user_name:
+            return {"user": user2}
+    return {"error": "usres not found"}  
+
+  
+ 
