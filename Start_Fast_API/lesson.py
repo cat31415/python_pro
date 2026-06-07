@@ -59,11 +59,13 @@ def get_cat():
 @app.post("/users/set_name/{user_id}",
           description="Update the name of a user by their ID",
           summary="Update user name")
-def set_name(user_id: int, name: str = Query(description="New name for the user", example="Alice")):
+def set_name(user_id: int, name: str = Query(description="New name for the user", example="Alice"), lastname: str | None = Query(description="New last name for user", example="Ivanova")):
     for user in users:
         if user["id"] == user_id:
             user["name"] = name
-            return {"message": f"User {user_id} name updated to {name}"}
+            if lastname != None:
+                user["name"] += " " + lastname
+            return {"message": f"User {user_id} name updated to {user["name"]}"}
     # выводим ошибку, если пользователь не найден
     return {"error": "User not found"}
 
