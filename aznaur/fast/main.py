@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from pydantic import BaseModel
 # uvicorn main:app --reload
 app = FastAPI()
@@ -14,8 +14,21 @@ users = [
 def home():
     return {"message": "Hello, World!"}
 
+@app.get("/users")
+def get_users():
+    return {"users": users}
+
+@app.get("/users/{user_id}")
+def get_user(user_id: int):
+    for user in users:
+        if user["id"] == user_id:
+            return {"user": user}
+    return {"error": "User not found"}
+
+#создать ручку /users/name/{user_name}, которая будет возвращать пользователей с именем, совпадающим с user_name
+
 @app.get("/cat")
-def cat():
+def get_cat():
     return {"message": "Meow!"}
 
 @app.get("/users/{user_id}",
@@ -36,7 +49,9 @@ def get_user(user_name: str):
     for user2 in users:
         if user2["name"] == user_name:
             return {"user": user2}
-    return {"error": "usres not found"}    
+    return {"error": "usres not found"}  
+
+  
 
 @app.post("/users/set_name/{user_id}",
           description="Update the name of a user by their ID",
