@@ -23,21 +23,15 @@ class Answer(BaseModel):
     question_id: int
     text: str
 
+# создать класс UserAnswer(question_id, answer), SubmitQuizRequest(имя пользователя, его имейл, список ответов)
+
 class UserAnswer(BaseModel):
-    '''Ответ пользователя'''
-    question_id: int
-    answer: str = Field(description="Строка с ответом пользователя")
+    user: str
+    emeil: EmailStr
+    answers: list[Question]
 
-# создать класс UserAnswer(question_id, answer), SubmitQuizRequest(имя пользователя, его имейл, id теста, список ответов)  
-# создать по 2 объетка классов 1 с правильными параметрами 1 с неправильными
 
-try:
-    q = Question(id = 10, text = "Столица России", options=["Москва", "Ярославль"])
-    print(q)
-except ValidationError:
-    print("Введите корректные данные")
 user = Player(username="Kirill", email="kirill@gmail.com", score=100, correct_answers=5, wrong_answers=4)
-test = Test(id = 10, name = " test", questions = [q])
 print(user)
 # class Question_not_pydantic:
 #     def __init__(self, id, text, options):
@@ -48,7 +42,11 @@ print(user)
 #     def __str__(self):
 #         return f"id={self.id} text={self.text} options={self.options}"
 
-
+# try:
+#     q = Question(id = 10, text = "Столица России", options=["Москва", 10])
+#     print(q)
+# except ValidationError:
+#     print("Введите корректные данные")
 
 
 # q2 = Question_not_pydantic(id = "10A", text = "Столица России", options=["Москва", 10])
