@@ -2,7 +2,7 @@ from models.room import Room
 from models.booking import Booking
 
 
-class RoomDB:
+class RoomDB: 
     pass
 
 class MockRoomDB(RoomDB):
