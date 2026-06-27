@@ -29,4 +29,4 @@ class MockBookingDB(BookingDB):
     bookings = []
 
     def create_booking(booking : Booking):
-        booking.append(booking)
+        booking.append(booking) 
