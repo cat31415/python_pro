@@ -35,6 +35,9 @@ class BookingDB:
     def find_close_rooms(self, start_time : datetime, end_time : datetime) -> list[id]:
         pass
 
+    def get_bookings(self):
+        pass
+
 class MockBookingDB(BookingDB):
     def __init__(self):
         self.bookings = []
@@ -49,10 +52,6 @@ class MockBookingDB(BookingDB):
                 res.append(booking.room_id)
 
         return res
-
-# SOLID разработка  
-
-# Boooking 
-# .......|>>>>>|
-# Хотим
-# ..........|>>>>>|
+    
+    def get_bookings(self):
+        return self.bookings

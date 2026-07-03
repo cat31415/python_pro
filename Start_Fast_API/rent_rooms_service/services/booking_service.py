@@ -20,6 +20,7 @@ class BookingService:
         
         if start_time < datetime.now():
             raise ValueError("Can't book room in the past")
+
         
         if start_time >= end_time:
             raise ValueError("End time can't be les or equal then start_time")
@@ -49,6 +50,12 @@ class BookingService:
         
         new_room = Room(id = id, name = name, size = size, is_vip = is_vip)
         self.room_db.add_room(new_room)
+
+    def get_bookings(self):
+        return self.booking_db.get_bookings()
+    
+    def get_rooms(self):
+        pass
 
             
 
