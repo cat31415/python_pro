@@ -1,7 +1,16 @@
 from models.product import Product
 
 class ProdDB():
-    pass
+    def add_product(self, prod: Product):
+        pass
+
+    def get_prod_id(self, id: int):
+        pass
+
+    def get_prod(self):
+        pass
+
+
 
 class ProductBD(ProdDB):
     product = [
@@ -19,3 +28,12 @@ class ProductBD(ProdDB):
         for p in self.product:
             if p == id:
                 return p
+            
+            pass
+
+    def get_prod(self):
+        return self.product
+    
+
+
+
