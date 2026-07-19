@@ -60,8 +60,13 @@ def create_order(payload: OrderCreate):
     if drink is None:
         raise HTTPException(status_code=404, detail="Напиток не найден")
 
+    max_id = 0
+    for order in orders:
+        if order["id"] > max_id:
+            max_id = order["id"]
+    
     order = {
-        "id": max((item["id"] for item in orders), default=0) + 1,
+        "id": max_id + 1,
         "customer": payload.customer.strip(),
         "drink_id": drink["id"],
         "drink_name": drink["name"],
