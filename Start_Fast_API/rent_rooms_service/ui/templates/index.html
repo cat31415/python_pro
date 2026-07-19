@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>RoomBook</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <aside class="sidebar">
+        <h2>🏢 RoomBook</h2>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" type="button" data-tab="booking">
+                Переговорные
+            </button>
+            <button class="nav-tab" type="button" data-tab="bookings">
+                Бронирования
+            </button>
+            <button class="nav-tab" type="button" data-tab="rooms">
+                Добавить комнату
+            </button>
+        </nav>
+    </aside>
+
+    <main>
+
+        <header>
+            <h1 id="pageTitle">Сервис бронирования переговорок</h1>
+            <p id="pageSubtitle">Создание нового бронирования</p>
+        </header>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Комнат</h3>
+                <span id="roomsCount">0</span>
+            </div>
+
+            <div class="card">
+                <h3>Бронирований</h3>
+                <span id="bookingsCount">0</span>
+            </div>
+
+        </div>
+
+        <section class="panel tab-panel active" id="bookingPanel">
+
+            <h2>Новое бронирование</h2>
+
+            <form id="bookingForm">
+
+                <label for="roomSelect">Комната</label>
+
+                <select id="roomSelect">
+
+                </select>
+
+                <label for="employee">Ваше имя</label>
+
+                <input
+                        id="employee"
+                        placeholder="Иван Иванов"
+                        required
+                >
+
+                <label for="start">Дата и время начала</label>
+
+                <input
+                        type="datetime-local"
+                        id="start"
+                        required
+                >
+
+                <label for="end">Дата и время окончания</label>
+
+                <input
+                        type="datetime-local"
+                        id="end"
+                        required
+                >
+
+                <label class="checkbox">
+
+                    <input
+                            type="checkbox"
+                            id="manager"
+                    >
+
+                    Я менеджер
+
+                </label>
+
+                <button class="primary-button" type="submit">
+                    Забронировать
+                </button>
+
+            </form>
+
+        </section>
+
+        <section class="tab-panel" id="bookingsPanel">
+
+            <h2>Список бронирований</h2>
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>Комната</th>
+
+                    <th>Сотрудник</th>
+
+                    <th>Начало</th>
+
+                    <th>Конец</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody id="bookingTable">
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+        <section class="panel tab-panel" id="roomsPanel">
+
+            <h2>Добавить комнату</h2>
+
+            <form id="roomForm">
+
+                <label for="roomId">ID комнаты</label>
+
+                <input
+                        type="number"
+                        id="roomId"
+                        min="1"
+                        required
+                >
+
+                <label for="roomName">Название</label>
+
+                <input
+                        id="roomName"
+                        placeholder="Большая переговорная"
+                        required
+                >
+
+                <label for="roomSize">Размер</label>
+
+                <select id="roomSize" required>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                </select>
+
+                <label class="checkbox">
+
+                    <input
+                            type="checkbox"
+                            id="roomVip"
+                    >
+
+                    VIP-комната
+
+                </label>
+
+                <button class="primary-button" type="submit">
+                    Добавить комнату
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="/static/script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Избранные книги в учебном приложении Shelf">
+    <title>Shelf — избранное</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/favorites.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span>S</span> Shelf</a>
+      <nav aria-label="Основная навигация">
+        <a href="/">Каталог</a>
+        <a class="active" href="/favorites">Избранное <span id="favoriteCount" class="count">0</span></a>
+        <a href="/docs" target="_blank" rel="noreferrer">API ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="saved-intro" aria-labelledby="page-title">
+        <p class="eyebrow">Личная полка</p>
+        <h1 id="page-title">Отложено на потом.<br>И на этот раз прочитаем.</h1>
+        <a class="back-link" href="/">← Вернуться в каталог</a>
+      </section>
+
+      <section aria-labelledby="saved-title">
+        <div class="results-heading">
+          <h2 id="saved-title">Избранные книги</h2>
+          <p id="resultsCount">Загрузка…</p>
+        </div>
+        <div id="bookGrid" class="book-grid" aria-live="polite">
+          <p class="empty-state">Подключаемся к API…</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
