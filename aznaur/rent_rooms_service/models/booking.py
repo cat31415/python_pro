@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from datetime import datetime
+print('')
 
 class Booking(BaseModel):
     room_id: int

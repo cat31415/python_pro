@@ -13,10 +13,10 @@ class ProductServices :
             self,
             prod_id : int,
             prod_name : str,
-            pric : int
+            pric : int,
+            description : str 
             ):
         
         if prod_name is None:
-            va
-        
+            raise ValueError("")        
         
