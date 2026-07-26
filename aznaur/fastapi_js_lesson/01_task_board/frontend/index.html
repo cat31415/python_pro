@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Учебная доска задач с API на FastAPI">
+    <title>Task Board</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">Task Board</a>
+      <a class="api-link" href="/docs" target="_blank" rel="noreferrer">API /docs ↗</a>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Сегодня в фокусе</p>
+        <h1 id="page-title">Делайте по одной вещи.<br><span>Но до конца.</span></h1>
+        <div class="progress-line">
+          <span id="progressText">Загружаем задачи…</span>
+          <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
+        </div>
+      </section>
+
+      <section class="board" aria-label="Доска задач">
+        <aside class="create-panel">
+          <p class="panel-number">01</p>
+          <h2>Новая задача</h2>
+          <form id="taskForm">
+            <label for="title">Что нужно сделать?</label>
+            <textarea id="title" name="title" minlength="2" maxlength="80" rows="3" placeholder="Написать первый POST-маршрут" required></textarea>
+
+            <label for="priority">Приоритет</label>
+            <select id="priority" name="priority">
+              <option value="low">Низкий</option>
+              <option value="medium" selected>Средний</option>
+              <option value="high">Высокий</option>
+            </select>
+
+            <button class="primary-button" type="submit">Добавить задачу</button>
+            <p id="formMessage" class="message" role="status" aria-live="polite"></p>
+          </form>
+        </aside>
+
+        <article class="tasks-panel">
+          <div class="tasks-heading">
+            <div>
+              <p class="panel-number">02</p>
+              <h2>Список</h2>
+            </div>
+            <div class="filters" aria-label="Фильтр задач">
+              <button class="filter active" type="button" data-filter="all">Все</button>
+              <button class="filter" type="button" data-filter="active">В работе</button>
+              <button class="filter" type="button" data-filter="done">Готово</button>
+            </div>
+          </div>
+
+          <div id="taskList" class="task-list" aria-live="polite">
+            <p class="empty-state">Подключаемся к API…</p>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Учебный пример очереди заказов на FastAPI и JavaScript">
+    <title>Coffee Queue</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Coffee Queue, главная">
+        <span class="brand-mark">CQ</span>
+        <span>Coffee Queue</span>
+      </a>
+      <a class="docs-link" href="/docs" target="_blank" rel="noreferrer">Открыть API ↗</a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Учебная кофейня</p>
+        <h1 id="page-title">Кофе без толпы у стойки</h1>
+        <p>Выберите напиток, назовите имя и следите за заказом в живой очереди.</p>
+        <div class="hero-stats" aria-label="Статистика очереди">
+          <span><strong id="waitingCount">0</strong> в работе</span>
+          <span><strong id="readyCount">0</strong> готовы</span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Оформление и очередь заказов">
+        <article class="order-panel">
+          <div class="section-heading">
+            <p class="step">Шаг 1</p>
+            <h2>Соберите заказ</h2>
+          </div>
+
+          <form id="orderForm">
+            <label for="customer">Имя на стакане</label>
+            <input id="customer" name="customer" minlength="2" maxlength="30" placeholder="Например, Маша" required>
+
+            <fieldset>
+              <legend>Напиток</legend>
+              <div id="drinkList" class="drink-list" aria-live="polite">
+                <p class="muted">Загружаем меню…</p>
+              </div>
+            </fieldset>
+
+            <button class="primary-button" type="submit">Добавить в очередь</button>
+            <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+          </form>
+        </article>
+
+        <article class="queue-panel">
+          <div class="section-heading queue-heading">
+            <div>
+              <p class="step">Шаг 2</p>
+              <h2>Живая очередь</h2>
+            </div>
+            <button id="refreshButton" class="text-button" type="button">Обновить</button>
+          </div>
+          <div id="orderList" class="order-list" aria-live="polite">
+            <p class="muted">Загружаем заказы…</p>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

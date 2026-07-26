@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Учебный каталог книг с API на FastAPI">
+    <title>Shelf — каталог</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/catalog.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span>S</span> Shelf</a>
+      <nav aria-label="Основная навигация">
+        <a class="active" href="/">Каталог</a>
+        <a href="/favorites">Избранное <span id="favoriteCount" class="count">0</span></a>
+        <a href="/docs" target="_blank" rel="noreferrer">API ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="catalog-intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Учебная библиотека</p>
+          <h1 id="page-title">Книги, после которых<br>хочется писать код.</h1>
+        </div>
+        <p class="intro-copy">Небольшая полка про Python, веб и данные. Поиск работает через query-параметры FastAPI.</p>
+      </section>
+
+      <section class="catalog-tools" aria-label="Поиск и фильтр">
+        <label class="search-field" for="search">
+          <span>Поиск</span>
+          <input id="search" type="search" placeholder="Название или автор">
+        </label>
+        <label for="genre">
+          <span>Раздел</span>
+          <select id="genre"><option value="">Все разделы</option></select>
+        </label>
+        <button id="searchButton" class="search-button" type="button">Найти</button>
+      </section>
+
+      <section aria-labelledby="results-title">
+        <div class="results-heading">
+          <h2 id="results-title">Каталог</h2>
+          <p id="resultsCount">Загрузка…</p>
+        </div>
+        <div id="bookGrid" class="book-grid" aria-live="polite">
+          <p class="empty-state">Подключаемся к API…</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Расписание переговорных в учебном приложении Roomly">
+    <title>Roomly — расписание</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/schedule.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span class="brand-dot"></span>Roomly</a>
+      <nav aria-label="Основная навигация">
+        <a href="/">Забронировать</a>
+        <a class="active" href="/schedule">Расписание</a>
+        <a href="/docs" target="_blank" rel="noreferrer">API ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="schedule-hero" aria-labelledby="page-title">
+        <div><p class="eyebrow">План офиса</p><h1 id="page-title">Расписание встреч</h1></div>
+        <label class="date-filter" for="scheduleDate">Показать дату<input id="scheduleDate" type="date"></label>
+      </section>
+
+      <section class="schedule-panel" aria-labelledby="schedule-title">
+        <div class="section-heading">
+          <span>→</span>
+          <div><h2 id="schedule-title">Все переговорные</h2><p id="scheduleSummary">Загрузка…</p></div>
+        </div>
+        <div id="scheduleList" class="schedule-list" aria-live="polite">
+          <p class="empty-state">Подключаемся к API…</p>
+        </div>
+        <p id="pageMessage" class="message" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+  </body>
+</html>

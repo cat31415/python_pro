@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Учебное бронирование переговорных с API на FastAPI">
+    <title>Roomly — новая встреча</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/booking.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span class="brand-dot"></span>Roomly</a>
+      <nav aria-label="Основная навигация">
+        <a class="active" href="/">Забронировать</a>
+        <a href="/schedule">Расписание</a>
+        <a href="/docs" target="_blank" rel="noreferrer">API ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Переговорные без конфликтов</p>
+        <h1 id="page-title">Выберите комнату.<br>Мы проверим время.</h1>
+      </section>
+
+      <section class="booking-layout" aria-label="Создание бронирования">
+        <article class="rooms-panel">
+          <div class="section-heading">
+            <span>01</span>
+            <div><h2>Комната</h2><p>Подберите размер и оборудование</p></div>
+          </div>
+          <div id="roomList" class="room-list" aria-live="polite">
+            <p class="empty-state">Загружаем комнаты…</p>
+          </div>
+        </article>
+
+        <article class="form-panel">
+          <div class="section-heading">
+            <span>02</span>
+            <div><h2>Время</h2><p>Офис открыт с 08:00 до 19:00</p></div>
+          </div>
+
+          <form id="bookingForm">
+            <label for="employee">Ваше имя</label>
+            <input id="employee" name="employee" minlength="2" maxlength="40" placeholder="Например, Алина" required>
+
+            <div class="form-row">
+              <label for="date">Дата<input id="date" name="date" type="date" required></label>
+              <label for="startHour">Начало
+                <select id="startHour" name="start_hour">
+                  <option value="8">08:00</option><option value="9">09:00</option>
+                  <option value="10" selected>10:00</option><option value="11">11:00</option>
+                  <option value="12">12:00</option><option value="13">13:00</option>
+                  <option value="14">14:00</option><option value="15">15:00</option>
+                  <option value="16">16:00</option><option value="17">17:00</option>
+                  <option value="18">18:00</option>
+                </select>
+              </label>
+            </div>
+
+            <label for="duration">Длительность
+              <select id="duration" name="duration_hours">
+                <option value="1">1 час</option><option value="2">2 часа</option>
+                <option value="3">3 часа</option><option value="4">4 часа</option>
+              </select>
+            </label>
+
+            <button class="primary-button" type="submit">Забронировать комнату</button>
+            <p id="formMessage" class="message" role="status" aria-live="polite"></p>
+          </form>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
