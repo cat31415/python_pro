@@ -28,12 +28,12 @@ class TaskCreate(BaseModel):
     titel: str
 
 
-app.get("/api/tasks")
+@app.get("/api/tasks")
 def get_data():
     return {"items": data}
 
 
-app.post("/api/tasks")
+@app.post("/api/tasks")
 def cret_z(task: TaskCreate):
     dat = {
         "id": max((item["id"] for item in data), default=0) + 1,
@@ -44,11 +44,11 @@ def cret_z(task: TaskCreate):
     data.append(dat)
     return dat
 
-app.patch("/api/tasks/{task_id}")
+@app.patch("/api/tasks/{task_id}")
 def upt_(task_id: int):
     pass
 
-app.delete("/api/tasks/{task_id}")
+@app.delete("/api/tasks/{task_id}")
 def delete(task_id: int):
     if task_id is None:
         raise HTTPException(status_code=404, detail="заметка не найдена")
@@ -59,7 +59,7 @@ def delete(task_id: int):
 
 
 
-app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+@app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 
 @app.get("/", include_in_schema=False)
