@@ -17,8 +17,9 @@ app = FastAPI(
 )
 
 
+
 DB_CONFIG = {
-    "dbname": "coffee",
+    "dbname": "bit",
     "user": "postgres",
     "password": "pass",
     "host": "localhost",

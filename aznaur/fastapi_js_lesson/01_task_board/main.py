@@ -1,4 +1,5 @@
 from pathlib import Path
+import psycopg2
 from pydantic import BaseModel
 
 from fastapi import FastAPI
@@ -16,6 +17,21 @@ app = FastAPI(
     version="1.0.0",
 )
 
+DB_CONFIG = {
+    "dbname": "bit22",
+    "user": "postgres",
+    "password": "pass",
+    "host": "localhost",
+    "port": "5432",
+}
+
+ORDER_COLUMNS =  (
+    "id",
+    "title",
+    "priority",
+    "done",
+)
+
 # TODO: создайте список tasks с 1–2 стартовыми задачами.
 # TODO: создайте модели TaskCreate и TaskUpdate.
 # TODO: добавьте четыре API-маршрута из TASK.md выше блока со статикой.
@@ -27,10 +43,42 @@ data = [
 class TaskCreate(BaseModel):
     titel: str
 
+def connect_to_db():
+    """Открывает новое соединение с PostgreSQL."""
+
+    return psycopg2.connect(**DB_CONFIG)
+
+def row_to_task(row: tuple) -> dict:
+    """Превращает строку PostgreSQL из tuple в словарь задачи."""
+
+    return dict(zip(ORDER_COLUMNS, row))
+
+def select_tasks():
+
+    conect = connect_to_db()
+    cursors = conect.cursor()
+
+    try:
+        cursors.execute(
+            """
+            SELECT id, title, priority, done
+            FROM tasks 
+
+            """
+        )
+        rows = cursors.fetchall()
+        return [row_to_task(row) for row in rows]
+    finally:
+        cursors.close()
+        conect.close()
+
+def insert_task():
+    pass
+
 
 @app.get("/api/tasks")
 def get_data():
-    return {"items": data}
+    return {"items": select_tasks()}
 
 
 @app.post("/api/tasks")
