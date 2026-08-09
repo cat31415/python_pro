@@ -41,7 +41,9 @@ data = [
 ]
 
 class TaskCreate(BaseModel):
-    titel: str
+    title: str
+    priority: str
+    done: bool = False
 
 def connect_to_db():
     """Открывает новое соединение с PostgreSQL."""
@@ -72,9 +74,36 @@ def select_tasks():
         cursors.close()
         conect.close()
 
-def insert_task():
-    pass
+def insert_task(title: str, priority: str, done: bool):
 
+    conect = connect_to_db()
+    cursors = conect.cursor()
+
+    try:
+        cursors.execute(
+            """
+            INSERT INTO tasks (
+                title,
+                priority,
+                done
+              )    VALUES (%s, %s, %s)
+              RETURNING id, title, priority, done;
+            """,
+            (title, priority, done), 
+        )
+        row = cursors.fetchone()
+
+        if row is None:
+            raise RuntimeError("Ошибка при вставке задачи в базу данных.")
+
+        conect.commit()
+        return row_to_task(row)
+    finally:
+        cursors.close()
+        conect.close()
+
+def delete_task(task_id; int):
+    
 
 @app.get("/api/tasks")
 def get_data():
@@ -82,15 +111,12 @@ def get_data():
 
 
 @app.post("/api/tasks")
-def cret_z(task: TaskCreate):
-    dat = {
-        "id": max((item["id"] for item in data), default=0) + 1,
-        "title": task.titel,
-        "priority": 'high',
-        "done": False
-    }
-    data.append(dat)
-    return dat
+def create_task(task: TaskCreate):
+    return insert_task(
+        title=task.title,
+        priority=task.priority,
+        done=task.done
+    )
 
 @app.patch("/api/tasks/{task_id}")
 def upt_(task_id: int):
@@ -107,7 +133,7 @@ def delete(task_id: int):
 
 
 
-@app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 
 @app.get("/", include_in_schema=False)
