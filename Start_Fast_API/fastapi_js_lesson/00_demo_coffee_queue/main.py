@@ -19,7 +19,7 @@ app = FastAPI(
 
 
 DB_CONFIG = {
-    "dbname": "bit",
+    "dbname": "coffee",
     "user": "postgres",
     "password": "pass",
     "host": "localhost",
@@ -201,3 +201,29 @@ app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 @app.get("/", include_in_schema=False)
 def frontend():
     return FileResponse(FRONTEND_DIR / "index.html")
+
+@app.delete("/api/orders/{order_id}", summary="Удалить заказ")
+def del_order(order_id):
+    connection = connect_to_db()
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute(
+            """
+            DELETE FROM coffee_orders WHERE id = %s
+            RETURNING id, customer, drink_id, drink_name, price, status;
+            """,
+            (order_id),
+        )
+        row = cursor.fetchone()
+        connection.commit()
+
+        if row is None:
+            return None
+        return row_to_order(row)
+    except Exception:
+        connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        connection.close()
