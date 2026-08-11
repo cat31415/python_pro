@@ -102,8 +102,33 @@ def insert_task(title: str, priority: str, done: bool):
         cursors.close()
         conect.close()
 
-def delete_task(task_id; int):
+def delete_task(task_id: int):
+    conect = connect_to_db()
+    cursors = conect.cursor()
+
+    try:
+        cursors.execute(
+            """ 
+            DELETE FROM tasks WHERE id = %s
+               RETURNING id, title, priority, done;
+            """,
+            (task_id,)
+            )
+        row = cursors.fetchone()
+        conect.commit()
+
+        if row is None:
+            return None
+        return row_to_task(row)
+    except Exception:
+        conect.rollback()
+        raise
+    finally:    
+        cursors.close()
+        conect.close()
+
     
+
 
 @app.get("/api/tasks")
 def get_data():
@@ -119,16 +144,12 @@ def create_task(task: TaskCreate):
     )
 
 @app.patch("/api/tasks/{task_id}")
-def upt_(task_id: int):
+def update_task(task_id: int):
     pass
 
 @app.delete("/api/tasks/{task_id}")
 def delete(task_id: int):
-    if task_id is None:
-        raise HTTPException(status_code=404, detail="заметка не найдена")
-
-    remove_task = data.pop(task_id)
-    return
+    return delete_task(task_id=task_id)
 
 
 
