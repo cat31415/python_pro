@@ -5,7 +5,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-
+from sqlalchemy import create_engine, String, select
+from  sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 
 BASE_DIR = Path(__file__).resolve().parent
 FRONTEND_DIR = BASE_DIR / "frontend"
@@ -15,8 +16,6 @@ app = FastAPI(
     description="Учебный пример связи FastAPI, PostgreSQL и JavaScript",
     version="2.0.0",
 )
-
-
 
 DB_CONFIG = {
     "dbname": "coffee",
@@ -36,6 +35,9 @@ drinks: list[dict] = [
 
 # PostgreSQL возвращает строку как tuple. Эти названия помогут превратить
 # полученный tuple в словарь, который FastAPI затем отправит как JSON.
+
+
+
 ORDER_COLUMNS = (
     "id",
     "customer",
@@ -44,6 +46,26 @@ ORDER_COLUMNS = (
     "price",
     "status",
 )
+
+class BaseAlchemy(DeclarativeBase):
+    pass
+
+class Order(BaseAlchemy):
+
+    __tablename__ = "coffee_orders"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    customer: Mapped[str] = mapped_column(String(30))
+    drink_id: Mapped[int] 
+    drink_name: Mapped[str] = mapped_column(String(100))
+    price: Mapped[int]
+    status: Mapped[str] = mapped_column(String(20))
+
+db_link = "postgresql+psycopg://postgres:pass@localhost:5432/coffee"
+engine = create_engine(db_link, echo=True)
+
+BaseAlchemy.metadata.create_all(engine)
+
 
 
 class OrderCreate(BaseModel):
@@ -66,23 +88,11 @@ def row_to_order(row: tuple) -> dict:
 def select_orders() -> list[dict]:
     """Выполняет обычный SELECT и возвращает все заказы."""
 
-    connection = connect_to_db()
-    cursor = connection.cursor()
-
-    try:
-        cursor.execute(
-            """
-            SELECT id, customer, drink_id, drink_name, price, status
-            FROM coffee_orders
-            ORDER BY id;
-            """
-        )
-        rows = cursor.fetchall()
-        return [row_to_order(row) for row in rows]
-    finally:
-        # Курсор и соединение нужно закрывать даже при ошибке.
-        cursor.close()
-        connection.close()
+    with Session(engine) as session:
+        orders = session.scalars(select(Order)).all()
+    
+    return orders
+   
 
 
 def insert_order(
@@ -93,39 +103,21 @@ def insert_order(
 ) -> dict:
     """Выполняет INSERT и возвращает созданную строку."""
 
-    connection = connect_to_db()
-    cursor = connection.cursor()
-
     try:
-        cursor.execute(
-            """
-            INSERT INTO coffee_orders (
-                customer,
-                drink_id,
-                drink_name,
-                price,
-                status
-            )
-            VALUES (%s, %s, %s, %s, %s)
-            RETURNING id, customer, drink_id, drink_name, price, status;
-            """,
-            (customer, drink_id, drink_name, price, "waiting"),
-        )
-        row = cursor.fetchone()
+        with Session(engine) as session:
+            order = Order(customer = customer,
+                drink_id = drink_id,
+                drink_name = drink_name,
+                price = price,
+                status = "waiting")
 
-        if row is None:
-            raise RuntimeError("PostgreSQL не вернул созданный заказ")
+            session.add(order)
+            session.commit()
 
-        # INSERT окончательно сохраняется только после commit().
-        connection.commit()
-        return row_to_order(row)
+        return order
     except Exception:
-        # Если запрос завершился ошибкой, отменяем незавершённую транзакцию.
-        connection.rollback()
         raise
-    finally:
-        cursor.close()
-        connection.close()
+
 
 
 def update_order_status(order_id: int) -> dict | None:
