@@ -6,12 +6,14 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException
+from sqlalchemy import create_engine, String, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, session
 
 
 BASE_DIR = Path(__file__).resolve().parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 
-app = FastAPI(
+app = FastAPI( 
     title="Task Board API",
     description="Задание: реализуйте API по контракту из TASK.md",
     version="1.0.0",
@@ -21,7 +23,7 @@ DB_CONFIG = {
     "dbname": "bit22",
     "user": "postgres",
     "password": "pass",
-    "host": "localhost",
+    "host": "localhost", 
     "port": "5432",
 }
 
@@ -31,6 +33,23 @@ ORDER_COLUMNS =  (
     "priority",
     "done",
 )
+
+class BaseSql(DeclarativeBase):
+    pass
+
+
+class Tasck(BaseSql):
+
+    __tablename__ = "task"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(String(100))
+    priority: Mapped[str] = mapped_column(String(50))
+    done: Mapped 
+
+
+
+
 
 # TODO: создайте список tasks с 1–2 стартовыми задачами.
 # TODO: создайте модели TaskCreate и TaskUpdate.
@@ -55,77 +74,40 @@ def row_to_task(row: tuple) -> dict:
 
     return dict(zip(ORDER_COLUMNS, row))
 
+engine = ""
+
 def select_tasks():
 
-    conect = connect_to_db()
-    cursors = conect.cursor()
+    with session(engine) as session:
+        task = session.scalars(select(Tasck)). all()
+        return task
+
+
+def insert_task(
+    title: str, 
+    priority: str, 
+    done: bool
+    ):
 
     try:
-        cursors.execute(
-            """
-            SELECT id, title, priority, done
-            FROM tasks 
+        with session(engine) as session:
+            task = Tasck(
+                title = title,
+                priority = priority,
+                done = done)
 
-            """
-        )
-        rows = cursors.fetchall()
-        return [row_to_task(row) for row in rows]
-    finally:
-        cursors.close()
-        conect.close()
+            session.add(task)
+            session.commit()
 
-def insert_task(title: str, priority: str, done: bool):
+        return task
+    except Exception:
+        raise
 
-    conect = connect_to_db()
-    cursors = conect.cursor()
 
-    try:
-        cursors.execute(
-            """
-            INSERT INTO tasks (
-                title,
-                priority,
-                done
-              )    VALUES (%s, %s, %s)
-              RETURNING id, title, priority, done;
-            """,
-            (title, priority, done), 
-        )
-        row = cursors.fetchone()
 
-        if row is None:
-            raise RuntimeError("Ошибка при вставке задачи в базу данных.")
-
-        conect.commit()
-        return row_to_task(row)
-    finally:
-        cursors.close()
-        conect.close()
 
 def delete_task(task_id: int):
-    conect = connect_to_db()
-    cursors = conect.cursor()
-
-    try:
-        cursors.execute(
-            """ 
-            DELETE FROM tasks WHERE id = %s
-               RETURNING id, title, priority, done;
-            """,
-            (task_id,)
-            )
-        row = cursors.fetchone()
-        conect.commit()
-
-        if row is None:
-            return None
-        return row_to_task(row)
-    except Exception:
-        conect.rollback()
-        raise
-    finally:    
-        cursors.close()
-        conect.close()
+    pass
 
     
 
