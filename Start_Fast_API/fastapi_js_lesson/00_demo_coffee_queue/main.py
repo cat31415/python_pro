@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-from sqlalchemy import create_engine, String, select
+from sqlalchemy import create_engine, String, select, update, delete
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -97,7 +97,62 @@ def select_done_order_by_customer(customer: str) -> list[dict]:
             select(Order).where(Order.customer == customer and Order.status == "ready").order_by(Order.id)
         ).all()
         return [order_to_dict(order) for order in orders]
-    
+
+def change_order_status(order_id: int, status: str) -> dict | None:
+    """Меняет статус заказа."""
+
+    with Session(engine) as session:
+        order = session.get(Order, order_id)
+        if order is None:
+            return None
+
+        order.status = status
+        session.commit()
+        return order_to_dict(order)
+
+def change_order_status_by_customer(customer: str, status: str) -> list[dict]:
+    """Меняет статус заказов по имени клиента."""
+
+    with Session(engine) as session:
+        # orders = session.scalars(
+        #     select(Order).where(Order.customer == customer)
+        # ).all()
+
+        # for order in orders:
+        #     order.status = status
+
+        query_update = (update(Order).where(Order.customer == customer).values(status=status))
+        session.execute(query_update)
+        session.commit()
+        return [order_to_dict(order) for order in session.scalars(select(Order).where(Order.customer == customer)).all()]
+
+def delete_orders_by_id(id: int) -> dict | None:
+    """Удаляет заказ по его ID из PostgreSQL."""
+
+    with Session(engine) as session:
+        order = session.get(Order, id)
+        if order is None:
+            return None
+
+        result = order_to_dict(order)
+        session.delete(order)
+        session.commit()
+        return result
+
+def delete_done_orders_by_customer(customer: str) -> list[dict]:
+    """Удаляет готовые заказы по имени клиента из PostgreSQL."""
+
+    with Session(engine) as session:
+        orders = session.scalars(
+            select(Order).where(Order.customer == customer and Order.status == "ready")
+        ).all()
+
+        result = [order_to_dict(order) for order in orders]
+        for order in orders:
+            session.delete(order)
+        session.commit()
+        return result
+
 def insert_order(
     customer: str,
     drink_id: int,
@@ -144,6 +199,10 @@ def delete_order(order_id: int) -> dict | None:
         session.delete(order)
         session.commit()
         return result
+
+        # query_delete = delete(Order).where(Order.id == order_id and Order.status == "ready")
+        # session.execute(query_delete)
+        # session.commit()
 
 
 @app.get("/api/drinks", summary="Получить меню")
