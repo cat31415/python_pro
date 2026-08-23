@@ -47,7 +47,9 @@ class Tasck(BaseSql):
     priority: Mapped[str] = mapped_column(String(50))
     done: Mapped 
 
+db_link = "postgresql+psycopg://postgres:pass@localhost:5432/coffee"
 
+engine = create_engine(db_link, echo=True)
 
 
 
@@ -74,12 +76,11 @@ def row_to_task(row: tuple) -> dict:
 
     return dict(zip(ORDER_COLUMNS, row))
 
-engine = ""
 
 def select_tasks():
 
     with session(engine) as session:
-        task = session.scalars(select(Tasck)). all()
+        task = session.scalars(select(Tasck)).all()
         return task
 
 
@@ -107,7 +108,14 @@ def insert_task(
 
 
 def delete_task(task_id: int):
-    pass
+    try:
+        with session(engine) as session:
+            task = Tasck(
+                task_id = task_id
+                )
+
+            session.delet
+         
 
     
 
