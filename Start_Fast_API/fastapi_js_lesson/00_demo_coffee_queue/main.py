@@ -1,12 +1,12 @@
+import os
 from pathlib import Path
 
-import psycopg2
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-from sqlalchemy import create_engine, String, select
-from  sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
+from sqlalchemy import create_engine, String, select, update, delete
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 
 BASE_DIR = Path(__file__).resolve().parent
 FRONTEND_DIR = BASE_DIR / "frontend"
@@ -17,55 +17,43 @@ app = FastAPI(
     version="2.0.0",
 )
 
-DB_CONFIG = {
-    "dbname": "coffee",
-    "user": "postgres",
-    "password": "pass",
-    "host": "localhost",
-    "port": "5432",
-}
-
 # Меню пока оставляем обычным Python-списком.
-# В PostgreSQL на этом занятии хранится только очередь заказов.
+# В PostgreSQL хранится только очередь заказов.
 drinks: list[dict] = [
     {"id": 1, "name": "Фильтр-кофе", "price": 170, "ready_minutes": 3},
     {"id": 2, "name": "Капучино", "price": 230, "ready_minutes": 6},
     {"id": 3, "name": "Какао", "price": 210, "ready_minutes": 5},
 ]
 
-# PostgreSQL возвращает строку как tuple. Эти названия помогут превратить
-# полученный tuple в словарь, который FastAPI затем отправит как JSON.
-
-
-
-ORDER_COLUMNS = (
-    "id",
-    "customer",
-    "drink_id",
-    "drink_name",
-    "price",
-    "status",
-)
-
 class BaseAlchemy(DeclarativeBase):
     pass
 
-class Order(BaseAlchemy):
 
+class Order(BaseAlchemy):
     __tablename__ = "coffee_orders"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     customer: Mapped[str] = mapped_column(String(30))
-    drink_id: Mapped[int] 
+    drink_id: Mapped[int]
     drink_name: Mapped[str] = mapped_column(String(100))
     price: Mapped[int]
     status: Mapped[str] = mapped_column(String(20))
 
-db_link = "postgresql+psycopg://postgres:pass@localhost:5432/coffee"
-engine = create_engine(db_link, echo=True)
 
+# В Docker PostgreSQL работает в этом же контейнере, поэтому адрес — localhost.
+# Через DATABASE_URL подключение можно изменить, не редактируя Python-код.
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+psycopg2://postgres:pass@localhost:5432/coffee",
+)
+
+engine = create_engine(
+    DATABASE_URL,
+    echo=True,
+)
+
+# После запуска PostgreSQL SQLAlchemy сама создаст таблицу coffee_orders.
 BaseAlchemy.metadata.create_all(engine)
-
 
 
 class OrderCreate(BaseModel):
@@ -73,27 +61,97 @@ class OrderCreate(BaseModel):
     drink_id: int
 
 
-def connect_to_db():
-    """Открывает новое соединение с PostgreSQL."""
+def order_to_dict(order: Order) -> dict:
+    """Превращает объект SQLAlchemy в обычный словарь для JSON-ответа."""
 
-    return psycopg2.connect(**DB_CONFIG)
-
-
-def row_to_order(row: tuple) -> dict:
-    """Превращает строку PostgreSQL из tuple в словарь заказа."""
-
-    return dict(zip(ORDER_COLUMNS, row))
+    return {
+        "id": order.id,
+        "customer": order.customer,
+        "drink_id": order.drink_id,
+        "drink_name": order.drink_name,
+        "price": order.price,
+        "status": order.status,
+    }
 
 
 def select_orders() -> list[dict]:
-    """Выполняет обычный SELECT и возвращает все заказы."""
+    """Возвращает все заказы из PostgreSQL."""
 
     with Session(engine) as session:
-        orders = session.scalars(select(Order)).all()
-    
-    return orders
-   
+        orders = session.scalars(select(Order).order_by(Order.id)).all()
+        return [order_to_dict(order) for order in orders]
 
+
+def select_order(order_id: int) -> dict | None:
+    """Возвращает заказ по его ID из PostgreSQL."""
+
+    with Session(engine) as session:
+        order = session.get(Order, order_id)
+        return order_to_dict(order) if order else None
+
+def select_done_order_by_customer(customer: str) -> list[dict]:
+    """Возвращает готовые заказы по имени клиента из PostgreSQL."""
+
+    with Session(engine) as session:
+        orders = session.scalars(
+            select(Order).where(Order.customer == customer and Order.status == "ready").order_by(Order.id)
+        ).all()
+        return [order_to_dict(order) for order in orders]
+
+def change_order_status(order_id: int, status: str) -> dict | None:
+    """Меняет статус заказа."""
+
+    with Session(engine) as session:
+        order = session.get(Order, order_id)
+        if order is None:
+            return None
+
+        order.status = status
+        session.commit()
+        return order_to_dict(order)
+
+def change_order_status_by_customer(customer: str, status: str) -> list[dict]:
+    """Меняет статус заказов по имени клиента."""
+
+    with Session(engine) as session:
+        # orders = session.scalars(
+        #     select(Order).where(Order.customer == customer)
+        # ).all()
+
+        # for order in orders:
+        #     order.status = status
+
+        query_update = (update(Order).where(Order.customer == customer).values(status=status))
+        session.execute(query_update)
+        session.commit()
+        return [order_to_dict(order) for order in session.scalars(select(Order).where(Order.customer == customer)).all()]
+
+def delete_orders_by_id(id: int) -> dict | None:
+    """Удаляет заказ по его ID из PostgreSQL."""
+
+    with Session(engine) as session:
+        order = session.get(Order, id)
+        if order is None:
+            return None
+
+        result = order_to_dict(order)
+        session.delete(order)
+        session.commit()
+        return result
+
+def delete_done_orders_by_customer(customer: str) -> list[dict]:
+    """Удаляет готовые заказы по имени клиента из PostgreSQL."""
+
+    with Session(engine) as session:
+        orders = session.scalars(
+            select(Order).where(Order.customer == customer and Order.status == "ready")
+        ).all()
+
+        result = [order_to_dict(order) for order in orders]
+        for order in orders:
+            session.delete(order)
+        session.commit()
+        return result
 
 def insert_order(
     customer: str,
@@ -101,53 +159,50 @@ def insert_order(
     drink_name: str,
     price: int,
 ) -> dict:
-    """Выполняет INSERT и возвращает созданную строку."""
+    """Добавляет заказ в PostgreSQL и возвращает его как словарь."""
 
-    try:
-        with Session(engine) as session:
-            order = Order(customer = customer,
-                drink_id = drink_id,
-                drink_name = drink_name,
-                price = price,
-                status = "waiting")
-
-            session.add(order)
-            session.commit()
-
-        return order
-    except Exception:
-        raise
-
+    with Session(engine) as session:
+        order = Order(
+            customer=customer,
+            drink_id=drink_id,
+            drink_name=drink_name,
+            price=price,
+            status="waiting",
+        )
+        session.add(order)
+        session.commit()
+        return order_to_dict(order)
 
 
 def update_order_status(order_id: int) -> dict | None:
-    """Выполняет UPDATE и возвращает изменённую строку или None."""
+    """Меняет статус заказа на ready или возвращает None."""
 
-    connection = connect_to_db()
-    cursor = connection.cursor()
-
-    try:
-        cursor.execute(
-            """
-            UPDATE coffee_orders
-            SET status = %s
-            WHERE id = %s
-            RETURNING id, customer, drink_id, drink_name, price, status;
-            """,
-            ("ready", order_id),
-        )
-        row = cursor.fetchone()
-        connection.commit()
-
-        if row is None:
+    with Session(engine) as session:
+        order = session.get(Order, order_id)
+        if order is None:
             return None
-        return row_to_order(row)
-    except Exception:
-        connection.rollback()
-        raise
-    finally:
-        cursor.close()
-        connection.close()
+
+        order.status = "ready"
+        session.commit()
+        return order_to_dict(order)
+
+
+def delete_order(order_id: int) -> dict | None:
+    """Удаляет заказ из PostgreSQL или возвращает None."""
+
+    with Session(engine) as session:
+        order = session.get(Order, order_id)
+        if order is None:
+            return None
+
+        result = order_to_dict(order)
+        session.delete(order)
+        session.commit()
+        return result
+
+        # query_delete = delete(Order).where(Order.id == order_id and Order.status == "ready")
+        # session.execute(query_delete)
+        # session.commit()
 
 
 @app.get("/api/drinks", summary="Получить меню")
@@ -163,10 +218,10 @@ def get_orders():
 @app.post("/api/orders", status_code=201, summary="Создать заказ")
 def create_order(payload: OrderCreate):
     drink = None
-    
+
     for d in drinks:
         if d["id"] == payload.drink_id:
-             drink = d
+            drink = d
 
     if drink is None:
         raise HTTPException(status_code=404, detail="Напиток не найден")
@@ -194,28 +249,10 @@ app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 def frontend():
     return FileResponse(FRONTEND_DIR / "index.html")
 
+
 @app.delete("/api/orders/{order_id}", summary="Удалить заказ")
-def del_order(order_id):
-    connection = connect_to_db()
-    cursor = connection.cursor()
-
-    try:
-        cursor.execute(
-            """
-            DELETE FROM coffee_orders WHERE id = %s
-            RETURNING id, customer, drink_id, drink_name, price, status;
-            """,
-            (order_id),
-        )
-        row = cursor.fetchone()
-        connection.commit()
-
-        if row is None:
-            return None
-        return row_to_order(row)
-    except Exception:
-        connection.rollback()
-        raise
-    finally:
-        cursor.close()
-        connection.close()
+def del_order(order_id: int):
+    order = delete_order(order_id)
+    if order is None:
+        raise HTTPException(status_code=404, detail="Заказ не найден")
+    return order

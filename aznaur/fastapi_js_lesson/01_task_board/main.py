@@ -1,12 +1,13 @@
 from pathlib import Path
 import psycopg2
 from pydantic import BaseModel
+import os
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException
-from sqlalchemy import create_engine, String, select
+from sqlalchemy import create_engine, String, select, true
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, session
 
 
@@ -37,6 +38,10 @@ ORDER_COLUMNS =  (
 class BaseSql(DeclarativeBase):
     pass
 
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+psycopg2://postgres:pass@localhost:5432/bit22",
+)
 
 class Tasck(BaseSql):
 
@@ -45,11 +50,9 @@ class Tasck(BaseSql):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(100))
     priority: Mapped[str] = mapped_column(String(50))
-    done: Mapped 
+    done: Mapped[bool] = mapped_column(default=False)
 
-db_link = "postgresql+psycopg://postgres:pass@localhost:5432/coffee"
-
-engine = create_engine(db_link, echo=True)
+engine = create_engine(DATABASE_URL, echo=True)
 
 
 
@@ -76,6 +79,7 @@ def row_to_task(row: tuple) -> dict:
 
     return dict(zip(ORDER_COLUMNS, row))
 
+engine = ""
 
 def select_tasks():
 
