@@ -73,12 +73,33 @@ def connect_to_db():
     """Открывает новое соединение с PostgreSQL."""
 
     return psycopg2.connect(**DB_CONFIG)
-
+ 
 def row_to_task(row: tuple) -> dict:
     """Превращает строку PostgreSQL из tuple в словарь задачи."""
 
     return dict(zip(ORDER_COLUMNS, row))
 
+def task_to_dict(task: Tasck) -> dict:
+
+    return {
+        "id": task.id,
+        "title": task.title,
+        "priority": task.priority,
+        "done": task.done,
+    }
+
+
+def select_tasks(task_id: int):
+    with session(engine) as session:
+        task = session.get(Tasck, task_id)
+        return task_to_dict(task) if task else None
+
+def select_done_order_by_task():
+    with session(engine) as session:
+        tasks = session.scalars(
+            select(Tasck).where(Tasck.done == True).order_by(Tasck.id)
+        ).all() 
+        return [task_to_dict(task) for task in tasks]
 
 
 def select_tasks():
@@ -86,6 +107,7 @@ def select_tasks():
     with session(engine) as session:
         task = session.scalars(select(Tasck)). all()
         return task
+
 
 
 def insert_task(
