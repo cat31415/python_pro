@@ -105,7 +105,7 @@ def select_done_order_by_task():
 def select_tasks():
 
     with session(engine) as session:
-        task = session.scalars(select(Tasck)). all()
+        task = session.scalars(select(Tasck)).all()
         return task
 
 
@@ -134,7 +134,14 @@ def insert_task(
 
 
 def delete_task(task_id: int):
-    pass
+    try:
+        with session(engine) as session:
+            task = Tasck(
+                task_id = task_id
+                )
+
+            session.delet
+         
 
     
 
