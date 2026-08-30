@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException
-from sqlalchemy import create_engine, String, select, true
+from sqlalchemy import create_engine, String, select, true, update, delete
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, session
 
 
@@ -42,7 +42,7 @@ DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql+psycopg2://postgres:pass@localhost:5432/bit22",
 )
-
+engine = create_engine(DATABASE_URL, echo=True)
 class Tasck(BaseSql):
 
     __tablename__ = "task"
@@ -52,7 +52,7 @@ class Tasck(BaseSql):
     priority: Mapped[str] = mapped_column(String(50))
     done: Mapped[bool] = mapped_column(default=False)
 
-engine = create_engine(DATABASE_URL, echo=True)
+
 
 
 
@@ -102,7 +102,7 @@ def select_done_order_by_task():
         return [task_to_dict(task) for task in tasks]
 
 
-def select_tasks():
+def select_taskss():
 
     with session(engine) as session:
         task = session.scalars(select(Tasck)).all()
@@ -135,16 +135,31 @@ def insert_task(
 
 def delete_task(task_id: int):
     try:
-        with session(engine) as session:
+        with session(engine) as sesssion:
             task = Tasck(
-                task_id = task_id
+                id = task_id
                 )
 
-            session.delet
-         
+            sesssion.delete(task)
+            sesssion.commit()
 
-    
+    except Exception:
+        raise
 
+
+def update_task(task_id: int):
+        with session(engine) as sesssion:
+            tas = sesssion.get(Tasck, task_id)
+            if tas is None:
+                return None
+
+            tas.done = True
+            sesssion.commit()
+            return  task_to_dict(tas)
+
+
+
+            
 
 @app.get("/api/tasks")
 def get_data():
@@ -160,8 +175,13 @@ def create_task(task: TaskCreate):
     )
 
 @app.patch("/api/tasks/{task_id}")
-def update_task(task_id: int):
-    pass
+def uupdate_task(task_id: int):
+    tas = update_task(task_id)
+    if tas is None: 
+        raise HTTPException(status_code=404, detail="Задача не найдена!")
+    return tas
+
+
 
 @app.delete("/api/tasks/{task_id}")
 def delete(task_id: int):
