@@ -1,8 +1,7 @@
 from pathlib import Path
 import os 
 
-
-from fastapi import FastAPI
+from fastapi import FastAPI 
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import create_engine, select, delete, update, VARCHAR, String
