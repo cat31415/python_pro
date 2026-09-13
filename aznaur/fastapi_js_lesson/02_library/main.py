@@ -1,6 +1,6 @@
 from pathlib import Path
 import os 
-import e
+
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
@@ -32,6 +32,11 @@ class Books(Base):
     year: Mapped[int] = mapped_column(String(10))
     description: Mapped = mapped_column(String(500))
 
+class Favorite(Base):
+
+    __tablename__ = "favorite"
+
+    favorite_ids: Mapped[int] = mapped_column(String(100))
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
@@ -46,22 +51,33 @@ engine = create_engine(DATABASE_URL, echo=True)
 
 
 def get_genres():
-    with session(engine) as session:
-        pass
+    with session(engine) as sessiion:
+        genre = sessiion.scalar(select(Books.genre))
+        return genre
+
 
 
 def get_books(): 
-    with session(engine) as session: 
-            
+    with session(engine) as sessioon:
+        bok = sessioon.scalars(select(Books)).all()
+        return bok
+        
+def delete_favorites():
+    with session(engine) as sessioon:
+        bok = sessioon.scalars(select(Books)).all()
+        return bok           
 
+def get_favorites(): 
+    with session(engine) as sessioon:
+        bok = sessioon.scalars(select(Favorite)).all()
 
 @app.get("/api/genres")
 def get_genres():
-    pass
+    return {"items": get_genres()}
 
 @app.get("/api/books")
-def get_books():
-    pass
+def get_bookss():
+    return {"items" : get_books()}
 
 @app.get("/api/")
 def get_():

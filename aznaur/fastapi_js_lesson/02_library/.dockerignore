@@ -1,0 +1,8 @@
+# Эти локальные файлы не нужно отправлять в Docker-образ.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.git/
+.gitignore
+Dockerfile*
