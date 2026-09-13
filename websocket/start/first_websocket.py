@@ -3,8 +3,9 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 app = FastAPI()
 
 connections = []
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+
+@app.websocket("/ws/{user_name}")
+async def websocket_endpoint(websocket: WebSocket, user_name):
 
     await websocket.accept()
 
@@ -15,7 +16,8 @@ async def websocket_endpoint(websocket: WebSocket):
             message = await websocket.receive_text()
 
             for connection in connections:
-                await connection.send_text(message)
+                print(f'{user_name}: {message}')
+                await connection.send_text(f'{user_name}: {message}')
             #websocket.close()
 
     except WebSocketDisconnect:

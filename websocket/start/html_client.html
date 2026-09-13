@@ -3,21 +3,34 @@
 <html>
 <body>
 
+    <input id = "name">
+    <button onclicK="createConnection()">Ввести имя</button>
+
     <input id = "message">
-    <button onclicK="sendMessage()">Send</button>
+    <button onclicK="sendMessage()">отправить сообщение</button>
 
     <div id="messages"></div>
 </body>
 
 <script>
 
-const socket = new WebSocket("ws://localhost:8000/ws")
+let socket;
 
-socket.onmessage = function(event)
-{
-    const div = document.getElementById("messages")
 
-    div.innerHTML += `<p>${event.data}</p>`
+function createConnection(){
+
+    const input_name = document.getElementById("name")
+    username = input_name.value
+
+    socket = new WebSocket(`ws://localhost:8000/ws/${encodeURIComponent(username)}`)
+    
+    socket.onmessage = function(event)
+    {
+        const div = document.getElementById("messages")
+
+        div.innerHTML += `<p>${event.data}</p>`
+    }
+
 }
 
 function sendMessage(){
