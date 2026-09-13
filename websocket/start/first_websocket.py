@@ -16,6 +16,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             for connection in connections:
                 await connection.send_text(message)
+            #websocket.close()
 
     except WebSocketDisconnect:
 
