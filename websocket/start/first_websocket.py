@@ -8,7 +8,7 @@ connections = []
 async def websocket_endpoint(websocket: WebSocket, user_name):
 
     await websocket.accept()
-
+ 
     connections.append(websocket)
     try:
         while True: 
