@@ -1,4 +1,4 @@
-(https://jsonplaceholder.typicode.com/?utm_source=chatgpt.com)
+(https://jsonplaceholder.typicode.com)
 
 **1. Пользователи с цифрой 7 в почтовом индексе**
 
