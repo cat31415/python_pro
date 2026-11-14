@@ -8,3 +8,4 @@ while True:
     print(ws.recv())
     if a == "exit":
         break
+ 
