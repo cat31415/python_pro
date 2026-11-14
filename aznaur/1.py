@@ -13,3 +13,4 @@ def count_words(filename):
 
 print(count_lines(txt_path))
 print(count_words(txt_path))
+
